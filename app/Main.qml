@@ -8,8 +8,9 @@ import Ubuntu.Components 1.3
  */
 
 MainView {
+  id             : main_view;
   // objectName for functional testing purposes (autopilot-qt5)
-  objectName     : "mainView";
+  objectName     : "main_view";
 
   // Note! applicationName needs to match the "name" field of click manifest
   applicationName: "cookingcalc.jaft";
@@ -37,6 +38,7 @@ MainView {
                }
 
     Column {
+      id     : page_layout;
       spacing: units.gu(1);
 
       anchors {
@@ -54,6 +56,18 @@ MainView {
 	  objectName: "selector_from";
 	  text      : "Fuck";
 	  model     : ["Value 1", "Value 2", "Value 3", "Value 4"];
+	}
+
+	TextField {
+	  id        : input_from;
+	  objectName: "input_from";
+	  errorHighlight: false;
+	  validator     : DoubleValidator {
+	                    notation: DoubleValidator.StandardNotation;
+	                  }
+	  height        : units.gu(5);
+	  font.pixelSize: FontUtils.sizeToPixels("medium");
+	  text          : '0.0';
 	}
       }
     }
