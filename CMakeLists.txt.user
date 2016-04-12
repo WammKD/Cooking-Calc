@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 3.5.0, 2016-04-11T22:28:42. -->
+<!-- Written by QtCreator 3.5.0, 2016-04-12T03:14:06. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -257,8 +257,8 @@
        <value type="QString">/var/lib/schroot/chroots/click-ubuntu-sdk-15.04-armhf</value>
       </valuelist>
       <valuelist type="QVariantList" key="Qt4ProjectManager.MaemoRunConfiguration.LastDeployedTimes">
-       <value type="QDateTime">2016-04-11T22:27:30</value>
-       <value type="QDateTime">2016-04-11T22:27:30</value>
+       <value type="QDateTime">2016-04-12T03:13:01</value>
+       <value type="QDateTime">2016-04-12T03:13:01</value>
       </valuelist>
      </valuemap>
      <value type="int" key="ProjectExplorer.BuildStepList.StepsCount">2</value>

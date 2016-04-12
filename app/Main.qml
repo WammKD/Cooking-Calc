@@ -25,29 +25,39 @@ MainView {
   width          : units.gu(100);
   height         : units.gu(75);
 
-  var temps = { "Fahrenheit": { "Fahrenheit": function(f) { return f; },
-				"Celsius"   : function(f) {
-				                return (f - 32) * 5 / 9;
-				              },
-				"Kelvin"    : function(f) {
-				                return (f + 459.67) * 5 / 9;
-				              } },
-		"Celsius"   : { "Fahrenheit": function(c) {
-				                return (c * 1.8) + 32;
-				              },
-				"Celsius"   : function(c) { return c; },
-				"Kelvin"    : function(c) {
-				                return c + 273.15;
-				              } },
-		"Kelvin"    : { "Fahrenheit": function(k) {
-				                return (k * 9 / 5) - 459.67;
-				              },
-				"Celsius"   : function(k) {
-				                return k - 273.15;
-				              },
-				"Kelvin"    : function(k) { return k } } };
+  property variant temps: { "Fahrenheit": { "Fahrenheit": function(f) {
+					                    return f;
+					                  },
+					    "Celsius"   : function(f) {
+				                            return (f - 32) *
+							           5 / 9;
+				                          },
+					    "Kelvin"    : function(f) {
+				                            return (f + 459.67)
+							           * 5 / 9;
+				                          } },
+			    "Celsius"   : { "Fahrenheit": function(c) {
+				                            return (c * 1.8) +
+							           32;
+				                          },
+					    "Celsius"   : function(c) {
+					                    return c;
+					                  },
+					    "Kelvin"    : function(c) {
+				                            return c + 273.15;
+				                          } },
+			    "Kelvin"    : { "Fahrenheit": function(k) {
+				                            return (k * 9 / 5)
+							           - 459.67;
+				                          },
+					    "Celsius"   : function(k) {
+				                            return k - 273.15;
+				                          },
+					    "Kelvin"    : function(k) {
+					                    return k;
+					                  } } };
 
-  var current_table = { 1: "one", 2: "two" };
+  property variant current_table: { 1: "one", 2: "two" };
 
   PageHeader {
     title    : i18n.tr("Cooking Calculator");
