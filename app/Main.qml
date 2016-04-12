@@ -35,6 +35,17 @@ MainView {
 		   bottom    : parent.bottom;
 		 }
                }
+
+    Column {
+      spacing: units.gu(1);
+
+      anchors {
+        margins: units.gu(2);
+	top    : parent.bottom;
+	left   : parent.left;
+	right  : parent.right;
+      }
+    }
   }
 }
 
