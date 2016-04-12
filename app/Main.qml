@@ -38,7 +38,6 @@ MainView {
                }
 
     Column {
-      id     : page_layout;
       spacing: units.gu(1);
 
       anchors {
@@ -48,27 +47,46 @@ MainView {
 	right  : parent.right;
       }
 
-      Row {
-	spacing: units.gu(1);
+      OptionSelector {
+	id        : selector_from;
+	objectName: "selector_from";
+	text      : "Initial Value";
+	width     : parent.width;
+	model     : ["Value 1", "Value 2", "Value 3", "Value 4"];
+      }
 
-	OptionSelector {
-	  id        : selector_from;
-	  objectName: "selector_from";
-	  text      : "Fuck";
-	  model     : ["Value 1", "Value 2", "Value 3", "Value 4"];
-	}
+      TextField {
+	id            : input_from;
+	objectName    : "input_from";
+	errorHighlight: false;
+	validator     : DoubleValidator {
+	                  notation: DoubleValidator.StandardNotation;
+	                }
+	height        : units.gu(5);
+	width         : parent.width;
+	font.pixelSize: FontUtils.sizeToPixels("medium");
+	text          : '0.0';
+      }
 
-	TextField {
-	  id        : input_from;
-	  objectName: "input_from";
-	  errorHighlight: false;
-	  validator     : DoubleValidator {
-	                    notation: DoubleValidator.StandardNotation;
-	                  }
-	  height        : units.gu(5);
-	  font.pixelSize: FontUtils.sizeToPixels("medium");
-	  text          : '0.0';
-	}
+      OptionSelector {
+	id        : selector_to;
+	objectName: "selector_to";
+	text      : "\n\nResulting Value";
+	width     : parent.width;
+	model     : ["Value 1", "Value 2", "Value 3", "Value 4"];
+      }
+
+      TextField {
+	id            : result_to;
+	objectName    : "result_to";
+	errorHighlight: false;
+	validator     : DoubleValidator {
+	                  notation: DoubleValidator.StandardNotation;
+	                }
+	height        : units.gu(5);
+	width         : parent.width;
+	font.pixelSize: FontUtils.sizeToPixels("medium");
+	text          : '0.0';
       }
     }
   }

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-12 01:46+0000\n"
+"POT-Creation-Date: 2016-04-12 04:30+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,20 +17,8 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../app/Main.qml:28
+#: ../app/Main.qml:29
 msgid "Cooking Calculator"
-msgstr ""
-
-#: ../app/Main.qml:53
-msgid "Hello.."
-msgstr ""
-
-#: ../app/Main.qml:59
-msgid "Tap me!"
-msgstr ""
-
-#: ../app/Main.qml:61
-msgid "..world!"
 msgstr ""
 
 #: /home/jaft/Ubuntu/build-CookingCalc-UbuntuSDK_for_armhf_GCC_ubuntu_sdk_15_04_vivid-Default/po/CookingCalc.desktop.in.h:1
