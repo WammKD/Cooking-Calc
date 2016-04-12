@@ -45,6 +45,17 @@ MainView {
 	left   : parent.left;
 	right  : parent.right;
       }
+
+      Row {
+	spacing: units.gu(1);
+
+	OptionSelector {
+	  id        : selector_from;
+	  objectName: "selector_from";
+	  text      : "Fuck";
+	  model     : ["Value 1", "Value 2", "Value 3", "Value 4"];
+	}
+      }
     }
   }
 }
