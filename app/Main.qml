@@ -26,6 +26,15 @@ MainView {
 
   PageHeader {
     title    : i18n.tr("Cooking Calculator");
+    extension: Sections {
+                 model: ["Volumes", "Temperatures", "Something"];
+
+                 anchors {
+		   left      : parent.left;
+		   leftMargin: units.gu(2);
+		   bottom    : parent.bottom;
+		 }
+               }
   }
 }
 
