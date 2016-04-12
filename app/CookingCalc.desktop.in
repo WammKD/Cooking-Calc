@@ -1,0 +1,11 @@
+[Desktop Entry]
+_Name=CookingCalc
+Comment=Just a place-holder
+Exec=@EXEC@
+Icon=@ICON@
+Terminal=false
+Type=Application
+X-Ubuntu-Touch=true
+
+
+

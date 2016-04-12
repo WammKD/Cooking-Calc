@@ -1,0 +1,17 @@
+{
+    "name": "@APP_ID@",
+    "description": "description of CookingCalc",
+    "architecture": "@CLICK_ARCH@",
+    "title": "@APP_NAME@",
+    "hooks": {
+        "CookingCalc": {
+            "apparmor": "CookingCalc.apparmor",
+            "desktop":  "CookingCalc.desktop"
+        }
+    },
+    "version": "0.1",
+    "maintainer": "Jonathan Schmeling <jaft.r@outlook.com>",
+    "framework" : "ubuntu-sdk-15.04.3"
+}
+
+
