@@ -67,11 +67,11 @@ MainView {
     }
   }
 
-  /* function change-selector-models() { */
-  /*   var k = Object.keys(current_table); */
-  /*   selector_from.model = k; */
-  /*   selector_to.model = k; */
-  /* } */
+  function changeSelectorModels() {
+    var k = Object.keys(current_table);
+    selector_from.model = k;
+    selector_to.model = k;
+  }
 
   PageHeader {
     title    : i18n.tr("Cooking Calculator");
@@ -83,9 +83,7 @@ MainView {
 			     text: "Temperatures";
 			     onTriggered: {
 			       current_table = temps;
-			       /* change-selector-models(); */
-			       selector_from.model = Object.keys(temps);
-			       selector_to.model = Object.keys(temps);
+			       changeSelectorModels();
 			     }
 			   },
 			   Action {
@@ -118,17 +116,18 @@ MainView {
       }
 
       TextField {
-	id            : input_from;
-	objectName    : "input_from";
-	errorHighlight: false;
-	validator     : DoubleValidator {
-	                  notation: DoubleValidator.StandardNotation;
-	                }
-	height        : units.gu(5);
-	width         : parent.width;
-	font.pixelSize: FontUtils.sizeToPixels("medium");
-	text          : '0.0';
-	onTextChanged : {
+	id              : input_from;
+	objectName      : "input_from";
+	errorHighlight  : false;
+	validator       : DoubleValidator {
+	                    notation: DoubleValidator.StandardNotation;
+	                  }
+	height          : units.gu(5);
+	width           : parent.width;
+	font.pixelSize  : FontUtils.sizeToPixels("medium");
+	inputMethodHints: Qt.ImhFormattedNumbersOnly;
+	text            : '0.0';
+	onTextChanged   : {
 	  if(activeFocus) {
 	    convert(input_from, result_to, selector_from, selector_to);
 	  }
@@ -144,17 +143,18 @@ MainView {
       }
 
       TextField {
-	id            : result_to;
-	objectName    : "result_to";
-	errorHighlight: false;
-	validator     : DoubleValidator {
-	                  notation: DoubleValidator.StandardNotation;
-	                }
-	height        : units.gu(5);
-	width         : parent.width;
-	font.pixelSize: FontUtils.sizeToPixels("medium");
-	text          : '0.0';
-	onTextChanged : {
+	id              : result_to;
+	objectName      : "result_to";
+	errorHighlight  : false;
+	validator       : DoubleValidator {
+	                    notation: DoubleValidator.StandardNotation;
+	                  }
+	height          : units.gu(5);
+	width           : parent.width;
+	font.pixelSize  : FontUtils.sizeToPixels("medium");
+	inputMethodHints: Qt.ImhFormattedNumbersOnly;
+	text            : '0.0';
+	onTextChanged   : {
 	  if(activeFocus) {
 	    convert(result_to, input_from, selector_to, selector_from);
 	  }
