@@ -25,39 +25,53 @@ MainView {
   width          : units.gu(100);
   height         : units.gu(75);
 
-  property variant temps: { "Fahrenheit": { "Fahrenheit": function(f) {
-					                    return f;
-					                  },
-					    "Celsius"   : function(f) {
-				                            return (f - 32) *
-							           5 / 9;
-				                          },
-					    "Kelvin"    : function(f) {
-				                            return (f + 459.67)
-							           * 5 / 9;
-				                          } },
-			    "Celsius"   : { "Fahrenheit": function(c) {
-				                            return (c * 1.8) +
-							           32;
-				                          },
-					    "Celsius"   : function(c) {
-					                    return c;
-					                  },
-					    "Kelvin"    : function(c) {
-				                            return c + 273.15;
-				                          } },
-			    "Kelvin"    : { "Fahrenheit": function(k) {
-				                            return (k * 9 / 5)
-							           - 459.67;
-				                          },
-					    "Celsius"   : function(k) {
-				                            return k - 273.15;
-				                          },
-					    "Kelvin"    : function(k) {
-					                    return k;
-					                  } } };
+  property var temps: { "Fahrenheit": { "Fahrenheit": function(f) { return f;},
+					"Celsius"   : function(f) {
+				                        return (f - 32) *
+							       5 / 9;
+				                      },
+					"Kelvin"    : function(f) {
+				                        return (f + 459.67) *
+							       5 / 9;
+				                      } },
+			"Celsius"   : { "Fahrenheit": function(c) {
+				                        return (c * 1.8) + 32;
+				                      },
+					"Celsius"   : function(c) {
+					                return c;
+					              },
+					"Kelvin"    : function(c) {
+				                        return c + 273.15;
+				                      } },
+			"Kelvin"    : { "Fahrenheit": function(k) {
+				                        return (k * 9 / 5) -
+							       459.67;
+				                      },
+					"Celsius"   : function(k) {
+				                        return k - 273.15;
+				                      },
+					"Kelvin"    : function(k) {
+					                return k;
+					              } } };
 
   property variant current_table: { 1: "one", 2: "two" };
+
+  function convert(tf_input, tf_result, s_from, s_to) {
+    var fin = tf_input.text;
+
+    if(!(Number(parseFloat(fin)) == fin)) {
+      tf_result.text = "";
+    } else {
+      tf_result.text = current_table[s_from.model[s_from.selectedIndex]]
+                                    [  s_to.model[  s_to.selectedIndex]](fin);
+    }
+  }
+
+  /* function change-selector-models() { */
+  /*   var k = Object.keys(current_table); */
+  /*   selector_from.model = k; */
+  /*   selector_to.model = k; */
+  /* } */
 
   PageHeader {
     title    : i18n.tr("Cooking Calculator");
@@ -69,6 +83,9 @@ MainView {
 			     text: "Temperatures";
 			     onTriggered: {
 			       current_table = temps;
+			       /* change-selector-models(); */
+			       selector_from.model = Object.keys(temps);
+			       selector_to.model = Object.keys(temps);
 			     }
 			   },
 			   Action {
@@ -111,6 +128,11 @@ MainView {
 	width         : parent.width;
 	font.pixelSize: FontUtils.sizeToPixels("medium");
 	text          : '0.0';
+	onTextChanged : {
+	  if(activeFocus) {
+	    convert(input_from, result_to, selector_from, selector_to);
+	  }
+	}
       }
 
       OptionSelector {
@@ -132,6 +154,11 @@ MainView {
 	width         : parent.width;
 	font.pixelSize: FontUtils.sizeToPixels("medium");
 	text          : '0.0';
+	onTextChanged : {
+	  if(activeFocus) {
+	    convert(result_to, input_from, selector_to, selector_from);
+	  }
+	}
       }
     }
   }
