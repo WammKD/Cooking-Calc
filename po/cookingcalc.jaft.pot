@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-13 02:24+0000\n"
+"POT-Creation-Date: 2016-04-13 03:44+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,20 +17,12 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../app/Main.qml:79
+#: ../app/Main.qml:81
 msgid "Cooking Calculator"
 msgstr ""
 
-#: ../app/Main.qml:183
-msgid "Swap Values"
-msgstr ""
-
-#: ../app/Main.qml:204
-msgid "Swap Measurements"
-msgstr ""
-
-#: ../app/Main.qml:225
-msgid "Swap Both"
+#: ../app/Main.qml:185
+msgid "Make Result the Initial Value"
 msgstr ""
 
 #: /home/jaft/Ubuntu/build-CookingCalc-UbuntuSDK_for_armhf_GCC_ubuntu_sdk_15_04_vivid-Default/po/CookingCalc.desktop.in.h:1

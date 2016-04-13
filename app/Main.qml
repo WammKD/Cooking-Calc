@@ -8,12 +8,12 @@ import Ubuntu.Components 1.3
  */
 
 MainView {
-  id                : main_view;
+  id                    : main_view;
   // objectName for functional testing purposes (autopilot-qt5)
-  objectName        : "main_view";
+  objectName            : "main_view";
 
   // Note! applicationName needs to match the "name" field of click manifest
-  applicationName   : "cookingcalc.jaft";
+  applicationName       : "cookingcalc.jaft";
 
   /*
    *  This property enables the application to change orientation
@@ -22,16 +22,16 @@ MainView {
   //automaticOrientation: true;
 
 
-  width             : units.gu(100);
-  height            : units.gu(75);
+  width                 : units.gu(100);
+  height                : units.gu(75);
 
-  property string spaces: '        ';
-
-  property var temps: { "Fahrenheit": { "Fahrenheit": function(f) { return f;},
+  property var temps: { "Fahrenheit": { "Fahrenheit": function(f) {
+					                return f;
+						      },
 					"Celsius"   : function(f) {
 				                        return (f - 32) *
 							       5 / 9;
-				                      },
+				                        },
 					"Kelvin"    : function(f) {
 				                        return (f + 459.67) *
 							       5 / 9;
@@ -55,6 +55,7 @@ MainView {
 					"Kelvin"    : function(k) {
 					                return k;
 					              } } };
+  property var vols: { 1: "one", 2: "two" };
 
   property var current_table: { 1: "one", 2: "two" };
 
@@ -65,9 +66,21 @@ MainView {
     if(!(fin2 == fin)) {
       tf_result.text = "";
     } else {
-      tf_result.text = spaces +
-                       current_table[s_from.model[s_from.selectedIndex]]
+      tf_result.text = current_table[s_from.model[s_from.selectedIndex]]
                                     [  s_to.model[  s_to.selectedIndex]](fin2);
+    }
+  }
+
+  function convert() {
+    var fin  = input_from.text;
+    var fin2 = Number(parseFloat(fin));
+
+    if(!(fin2 == fin)) {
+      result_to.text = "";
+    } else {
+      result_to.text =
+        current_table[selector_from.model[selector_from.selectedIndex]]
+                     [  selector_to.model[  selector_to.selectedIndex]](fin2);
     }
   }
 
@@ -119,7 +132,7 @@ MainView {
 	width     : parent.width;
 	model     : ["Value 1", "Value 2", "Value 3", "Value 4"];
 	onSelectedIndexChanged: {
-	  convert(input_from, result_to, selector_from, selector_to);
+	  convert();
 	}
       }
 
@@ -136,7 +149,7 @@ MainView {
 	inputMethodHints: Qt.ImhFormattedNumbersOnly;
 	text            : '0.0';
 	onTextChanged   : {
-	  convert(input_from, result_to, selector_from, selector_to);
+	  convert();
 	}
       }
 
@@ -147,7 +160,7 @@ MainView {
 	width                 : parent.width;
 	model                 : ["Value 1", "Value 2", "Value 3", "Value 4"];
 	onSelectedIndexChanged: {
-	  convert(input_from, result_to, selector_from, selector_to);
+	  convert();
 	}
       }
 
@@ -163,7 +176,7 @@ MainView {
     Rectangle {
       id    : result;
       color : UbuntuColors.silk;
-      height: result_to.height + 10;
+      height: result_to.height * 1.2;
       width : parent.width;
 
       anchors {
@@ -174,50 +187,27 @@ MainView {
 
       Label {
     	id                    : result_to;
-    	text                  : spaces + '0';
+    	text                  : '0';
     	anchors.verticalCenter: parent.verticalCenter;
-      /* fontSize: "large"; */
+	anchors.leftMargin    : units.gu(3);
+	anchors.left          : parent.left;
       }
     }
 
     Button {
-      id       : swap_v;
-      text     : i18n.tr("Swap Values");
-      width    : parent.width - 2 * units.gu(2);
-      height   : units.gu(5);
-      color    : UbuntuColors.orange;
-      onClicked: {
-	var index_temp              = selector_from.selectedIndex;
-	selector_from.selectedIndex = selector_to.selectedIndex;
-	selector_to.selectedIndex   = index_temp;
-      }
-
-      anchors {
-	topMargin  : units.gu(6);
-	leftMargin : units.gu(2);
-	rightMargin: units.gu(2);
-	top        : result.bottom;
-	left       : parent.left;
-      }
-    }
-
-    Button {
-      text     : i18n.tr("Swap Measurements");
+      text     : i18n.tr("Make Result the Initial Value");
       width    : parent.width - 2 * units.gu(2);
       height   : units.gu(5);
       color    : UbuntuColors.red;
       onClicked: {
-	var index_temp              = selector_from.selectedIndex;
-	selector_from.selectedIndex = selector_to.selectedIndex;
-	selector_to.selectedIndex   = index_temp;
+	input_from.text = Number(parseFloat(result_to.text));
       }
 
       anchors {
-	topMargin   : units.gu(1);
+	topMargin   : units.gu(6);
 	leftMargin  : units.gu(2);
 	rightMargin : units.gu(2);
-	bottomMargin: units.gu(1);
-	top         : swap_v.bottom;
+	top         : result.bottom;
 	left        : parent.left;
       }
     }
