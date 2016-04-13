@@ -25,6 +25,8 @@ MainView {
   width             : units.gu(100);
   height            : units.gu(75);
 
+  property string spaces: '        ';
+
   property var temps: { "Fahrenheit": { "Fahrenheit": function(f) { return f;},
 					"Celsius"   : function(f) {
 				                        return (f - 32) *
@@ -63,7 +65,7 @@ MainView {
     if(!(fin2 == fin)) {
       tf_result.text = "";
     } else {
-      tf_result.text = '        ' +
+      tf_result.text = spaces +
                        current_table[s_from.model[s_from.selectedIndex]]
                                     [  s_to.model[  s_to.selectedIndex]](fin2);
     }
@@ -139,11 +141,11 @@ MainView {
       }
 
       OptionSelector {
-	id        : selector_to;
-	objectName: "selector_to";
-	text      : "\n\nResulting Value";
-	width     : parent.width;
-	model     : ["Value 1", "Value 2", "Value 3", "Value 4"];
+	id                    : selector_to;
+	objectName            : "selector_to";
+	text                  : "\n\nResulting Value";
+	width                 : parent.width;
+	model                 : ["Value 1", "Value 2", "Value 3", "Value 4"];
 	onSelectedIndexChanged: {
 	  convert(input_from, result_to, selector_from, selector_to);
 	}
@@ -160,29 +162,35 @@ MainView {
 
     Rectangle {
       id    : result;
-      color: UbuntuColors.silk;
+      color : UbuntuColors.silk;
       height: result_to.height + 10;
-      width: parent.width;
+      width : parent.width;
 
       anchors {
-    	left   : parent.left;
-    	top    : col.bottom;
+    	left     : parent.left;
+    	top      : col.bottom;
     	topMargin: units.gu(1);
       }
 
       Label {
-    	id       : result_to;
-    	text     : '        0.0';
+    	id                    : result_to;
+    	text                  : spaces + '0';
     	anchors.verticalCenter: parent.verticalCenter;
       /* fontSize: "large"; */
       }
     }
 
     Button {
-      text     : i18n.tr("Swap");
+      id       : swap_v;
+      text     : i18n.tr("Swap Values");
       width    : parent.width - 2 * units.gu(2);
+      height   : units.gu(5);
       color    : UbuntuColors.orange;
-      onClicked: ;
+      onClicked: {
+	var index_temp              = selector_from.selectedIndex;
+	selector_from.selectedIndex = selector_to.selectedIndex;
+	selector_to.selectedIndex   = index_temp;
+      }
 
       anchors {
 	topMargin  : units.gu(6);
@@ -190,6 +198,27 @@ MainView {
 	rightMargin: units.gu(2);
 	top        : result.bottom;
 	left       : parent.left;
+      }
+    }
+
+    Button {
+      text     : i18n.tr("Swap Measurements");
+      width    : parent.width - 2 * units.gu(2);
+      height   : units.gu(5);
+      color    : UbuntuColors.red;
+      onClicked: {
+	var index_temp              = selector_from.selectedIndex;
+	selector_from.selectedIndex = selector_to.selectedIndex;
+	selector_to.selectedIndex   = index_temp;
+      }
+
+      anchors {
+	topMargin   : units.gu(1);
+	leftMargin  : units.gu(2);
+	rightMargin : units.gu(2);
+	bottomMargin: units.gu(1);
+	top         : swap_v.bottom;
+	left        : parent.left;
       }
     }
   }
