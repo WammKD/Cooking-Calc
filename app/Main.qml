@@ -62,7 +62,8 @@ MainView {
 		       "Pinches"    : 1 / 24,
 		       "Pints"      : 32,
 		       "Quarts"     : 64,
-		       "Gallons"    : 256 };
+		       "Gallons"    : 256,
+		       "Drops"      : 1 / 180 };
 
   property var current_table: vols;
 
@@ -94,21 +95,24 @@ MainView {
     title    : i18n.tr("Cooking Calculator");
     extension: Sections {
                  actions: [Action {
-			     text: "Volumes";
+			     text       : "Volumes";
 			     onTriggered: {
 			       current_table = vols;
 			       changeSelectorModels();
 			     }
 			   },
 			   Action {
-			     text: "Temperatures";
+			     text       : "Temperatures";
 			     onTriggered: {
 			       current_table = temps;
 			       changeSelectorModels();
 			     }
 			   },
 			   Action {
-			     text: "Something";
+			     text       : "Something";
+			     onTriggered: {
+			       col.visible = false;
+			     }
 			   }]
 
 		 anchors {
@@ -135,7 +139,7 @@ MainView {
 	text                  : "Initial Value";
 	width                 : parent.width;
 	containerHeight       : itemHeight * 4;
-	model                 : ["Value 1", "Value 2", "Value 3", "Value 4"];
+	model                 : current_table;
 	onSelectedIndexChanged: convert();
       }
 
@@ -160,7 +164,7 @@ MainView {
 	text                  : "\n\nResulting Value";
 	width                 : parent.width;
 	containerHeight       : itemHeight * 4;
-	model                 : ["Value 1", "Value 2", "Value 3", "Value 4"];
+	model                 : current_table;
 	onSelectedIndexChanged: convert();
       }
     }
@@ -168,7 +172,7 @@ MainView {
     Rectangle {
       id    : result;
       color : UbuntuColors.graphite;
-      height: result_to.height * 1.4;
+      height: result_to.height * 2;
       width : parent.width;
 
       anchors {
@@ -202,6 +206,22 @@ MainView {
 	rightMargin : units.gu(2);
 	top         : result.bottom;
 	left        : parent.left;
+      }
+    }
+
+    Column {
+      id     : col2;
+      spacing: units.gu(1);
+
+      anchors {
+        margins: units.gu(2);
+	top    : parent.bottom;
+	left   : parent.left;
+	right  : parent.right;
+      }
+
+      Label {
+	text: "What!"
       }
     }
   }
