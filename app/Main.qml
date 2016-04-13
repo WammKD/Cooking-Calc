@@ -177,6 +177,21 @@ MainView {
       /* fontSize: "large"; */
       }
     }
+
+    Button {
+      text     : i18n.tr("Swap");
+      width    : parent.width - 2 * units.gu(2);
+      color    : UbuntuColors.orange;
+      onClicked: ;
+
+      anchors {
+	topMargin  : units.gu(6);
+	leftMargin : units.gu(2);
+	rightMargin: units.gu(2);
+	top        : result.bottom;
+	left       : parent.left;
+      }
+    }
   }
 }
 
