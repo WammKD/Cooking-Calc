@@ -53,27 +53,32 @@ MainView {
 
     Column {
       spacing: units.gu(1);
+
       anchors {
         margins: units.gu(2);
-        fill   : parent;
+	top    : parent.bottom;
+	left   : parent.left;
+	right  : parent.right;
       }
 
-      Label {
-        id        : label;
-        objectName: "label";
-
-        text      : i18n.tr("Hello..");
+      OptionSelector {
+	id                    : selector_product;
+	objectName            : "selector_product";
+	text                  : "Product";
+	width                 : parent.width;
+	containerHeight       : itemHeight * 4;
+	model                 : ["Shit", "Fuck", "Damn"];
+	onSelectedIndexChanged: ;
       }
 
-      Button {
-        objectName: "button";
-        width     : parent.width;
-
-        text      : i18n.tr("Tap me!");
-
-        onClicked : {
-          label.text = i18n.tr("..world!");
-        }
+      OptionSelector {
+	id                    : selector_measurement;
+	objectName            : "selector_measurement";
+	text                  : "Measurement";
+	width                 : parent.width;
+	containerHeight       : itemHeight * 4;
+	model                 : ["Shit", "Fuck", "Damn"];
+	onSelectedIndexChanged: ;
       }
     }
   }
