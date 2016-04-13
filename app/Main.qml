@@ -59,18 +59,6 @@ MainView {
 
   property var current_table: { 1: "one", 2: "two" };
 
-  function convert(tf_input, tf_result, s_from, s_to) {
-    var fin  = tf_input.text;
-    var fin2 = Number(parseFloat(fin));
-
-    if(!(fin2 == fin)) {
-      tf_result.text = "";
-    } else {
-      tf_result.text = current_table[s_from.model[s_from.selectedIndex]]
-                                    [  s_to.model[  s_to.selectedIndex]](fin2);
-    }
-  }
-
   function convert() {
     var fin  = input_from.text;
     var fin2 = Number(parseFloat(fin));
