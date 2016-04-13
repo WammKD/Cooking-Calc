@@ -8,12 +8,12 @@ import Ubuntu.Components 1.3
  */
 
 MainView {
-  id             : main_view;
+  id                : main_view;
   // objectName for functional testing purposes (autopilot-qt5)
-  objectName     : "main_view";
+  objectName        : "main_view";
 
   // Note! applicationName needs to match the "name" field of click manifest
-  applicationName: "cookingcalc.jaft";
+  applicationName   : "cookingcalc.jaft";
 
   /*
    *  This property enables the application to change orientation
@@ -22,8 +22,8 @@ MainView {
   //automaticOrientation: true;
 
 
-  width          : units.gu(100);
-  height         : units.gu(75);
+  width             : units.gu(100);
+  height            : units.gu(75);
 
   property var temps: { "Fahrenheit": { "Fahrenheit": function(f) { return f;},
 					"Celsius"   : function(f) {
@@ -54,16 +54,18 @@ MainView {
 					                return k;
 					              } } };
 
-  property variant current_table: { 1: "one", 2: "two" };
+  property var current_table: { 1: "one", 2: "two" };
 
   function convert(tf_input, tf_result, s_from, s_to) {
-    var fin = tf_input.text;
+    var fin  = tf_input.text;
+    var fin2 = Number(parseFloat(fin));
 
-    if(!(Number(parseFloat(fin)) == fin)) {
+    if(!(fin2 == fin)) {
       tf_result.text = "";
     } else {
-      tf_result.text = current_table[s_from.model[s_from.selectedIndex]]
-                                    [  s_to.model[  s_to.selectedIndex]](fin);
+      tf_result.text = '        ' +
+                       current_table[s_from.model[s_from.selectedIndex]]
+                                    [  s_to.model[  s_to.selectedIndex]](fin2);
     }
   }
 
@@ -98,6 +100,7 @@ MainView {
                }
 
     Column {
+      id     : col;
       spacing: units.gu(1);
 
       anchors {
@@ -113,6 +116,9 @@ MainView {
 	text      : "Initial Value";
 	width     : parent.width;
 	model     : ["Value 1", "Value 2", "Value 3", "Value 4"];
+	onSelectedIndexChanged: {
+	  convert(input_from, result_to, selector_from, selector_to);
+	}
       }
 
       TextField {
@@ -128,9 +134,7 @@ MainView {
 	inputMethodHints: Qt.ImhFormattedNumbersOnly;
 	text            : '0.0';
 	onTextChanged   : {
-	  if(activeFocus) {
-	    convert(input_from, result_to, selector_from, selector_to);
-	  }
+	  convert(input_from, result_to, selector_from, selector_to);
 	}
       }
 
@@ -140,25 +144,37 @@ MainView {
 	text      : "\n\nResulting Value";
 	width     : parent.width;
 	model     : ["Value 1", "Value 2", "Value 3", "Value 4"];
+	onSelectedIndexChanged: {
+	  convert(input_from, result_to, selector_from, selector_to);
+	}
       }
 
-      TextField {
-	id              : result_to;
-	objectName      : "result_to";
-	errorHighlight  : false;
-	validator       : DoubleValidator {
-	                    notation: DoubleValidator.StandardNotation;
-	                  }
-	height          : units.gu(5);
-	width           : parent.width;
-	font.pixelSize  : FontUtils.sizeToPixels("medium");
-	inputMethodHints: Qt.ImhFormattedNumbersOnly;
-	text            : '0.0';
-	onTextChanged   : {
-	  if(activeFocus) {
-	    convert(result_to, input_from, selector_to, selector_from);
-	  }
-	}
+      /* Label { */
+      /* 	id       : result_to; */
+      /* 	text     : '0.0'; */
+      /* 	/\* font.italic: true; *\/ */
+      /* 	anchors.horizontalCenter: parent.horizontalCenter; */
+      /* /\* fontSize: "large"; *\/ */
+      /* } */
+    }
+
+    Rectangle {
+      id    : result;
+      color: UbuntuColors.silk;
+      height: result_to.height + 10;
+      width: parent.width;
+
+      anchors {
+    	left   : parent.left;
+    	top    : col.bottom;
+    	topMargin: units.gu(1);
+      }
+
+      Label {
+    	id       : result_to;
+    	text     : '        0.0';
+    	anchors.verticalCenter: parent.verticalCenter;
+      /* fontSize: "large"; */
       }
     }
   }
