@@ -55,20 +55,31 @@ MainView {
 					"Kelvin"    : function(k) {
 					                return k;
 					              } } };
-  property var vols: { 1: "one", 2: "two" };
+  property var vols: { "Tablespoons": 1,
+		       "Teaspoons"  : 1 / 3,
+		       "Cups"       : 16,
+		       "Ounces"     : 2,
+		       "Pinches"    : 1 / 24,
+		       "Pints"      : 32,
+		       "Quarts"     : 64,
+		       "Gallons"    : 256 };
 
-  property var current_table: { 1: "one", 2: "two" };
+  property var current_table: vols;
 
   function convert() {
-    var fin  = input_from.text;
-    var fin2 = Number(parseFloat(fin));
+    var orig  = input_from.text;
+    var fin = Number(parseFloat(orig));
 
-    if(!(fin2 == fin)) {
+    if(!(fin == orig)) {
       result_to.text = "";
-    } else {
+    } else if(current_table == temps) {
       result_to.text =
         current_table[selector_from.model[selector_from.selectedIndex]]
-                     [  selector_to.model[  selector_to.selectedIndex]](fin2);
+                     [  selector_to.model[  selector_to.selectedIndex]](fin);
+    } else {
+      result_to.text =
+        fin * current_table[selector_from.model[selector_from.selectedIndex]] /
+              current_table[  selector_to.model[  selector_to.selectedIndex]];
     }
   }
 
@@ -76,6 +87,7 @@ MainView {
     var k = Object.keys(current_table);
     selector_from.model = k;
     selector_to.model = k;
+    convert();
   }
 
   PageHeader {
@@ -83,6 +95,10 @@ MainView {
     extension: Sections {
                  actions: [Action {
 			     text: "Volumes";
+			     onTriggered: {
+			       current_table = vols;
+			       changeSelectorModels();
+			     }
 			   },
 			   Action {
 			     text: "Temperatures";
@@ -118,6 +134,7 @@ MainView {
 	objectName            : "selector_from";
 	text                  : "Initial Value";
 	width                 : parent.width;
+	containerHeight       : itemHeight * 4;
 	model                 : ["Value 1", "Value 2", "Value 3", "Value 4"];
 	onSelectedIndexChanged: convert();
       }
@@ -142,6 +159,7 @@ MainView {
 	objectName            : "selector_to";
 	text                  : "\n\nResulting Value";
 	width                 : parent.width;
+	containerHeight       : itemHeight * 4;
 	model                 : ["Value 1", "Value 2", "Value 3", "Value 4"];
 	onSelectedIndexChanged: convert();
       }
@@ -149,8 +167,8 @@ MainView {
 
     Rectangle {
       id    : result;
-      color : UbuntuColors.silk;
-      height: result_to.height * 1.3;
+      color : UbuntuColors.graphite;
+      height: result_to.height * 1.4;
       width : parent.width;
 
       anchors {
