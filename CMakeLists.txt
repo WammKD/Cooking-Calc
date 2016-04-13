@@ -1,4 +1,4 @@
-project(CookingCalc C CXX)
+project(CookingCalculator C CXX)
 cmake_minimum_required(VERSION 2.8.9)
 
 # Do not remove this line, its required for the correct functionality of the Ubuntu-SDK
@@ -33,20 +33,20 @@ set(QT_IMPORTS_DIR "lib/${ARCH_TRIPLET}")
 
 option(INSTALL_TESTS "Install the tests on make install" on)
 
-set(APP_NAME          CookingCalc)
-set(APP_ID            "cookingcalc.jaft")
-set(COOKINGCALC_DIR "share/qml/CookingCalc")
+set(APP_NAME          CookingCalculator)
+set(APP_ID            "cookingcalculator.jaft")
+set(COOKINGCALCULATOR_DIR "share/qml/CookingCalculator")
 set(MAIN_QML          "Main.qml")
-set(ICON              "graphics/CookingCalc.png")
+set(ICON              "graphics/CookingCalculator.png")
 
 # Set install paths
 set(CMAKE_INSTALL_PREFIX /)
 set(DATA_DIR /)
 set(DESKTOP_DIR ${DATA_DIR})
-set(DESKTOP_FILE_NAME "CookingCalc.desktop")
+set(DESKTOP_FILE_NAME "CookingCalculator.desktop")
 
 # This sets the commandline that is executed on the device
-set(EXEC "qmlscene %U ${COOKINGCALC_DIR}/${MAIN_QML}")
+set(EXEC "qmlscene %U ${COOKINGCALCULATOR_DIR}/${MAIN_QML}")
 
 # Configures the manifest file. The manifest file describes the click package
 # to the target system. All cmake variables that are defined at this point
@@ -56,7 +56,7 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/manifest.json
         DESTINATION ${CMAKE_INSTALL_PREFIX})
 
 install(DIRECTORY "app/graphics" DESTINATION ${DATA_DIR})
-install(FILES "CookingCalc.apparmor" DESTINATION ${DATA_DIR})
+install(FILES "CookingCalculator.apparmor" DESTINATION ${DATA_DIR})
 
 add_subdirectory(app)
 add_subdirectory(po)
@@ -68,10 +68,10 @@ add_custom_target("autopilot" chmod +x ${CMAKE_SOURCE_DIR}/app/tests/autopilot/r
 add_custom_target("check" /usr/bin/qmltestrunner -input ${CMAKE_SOURCE_DIR}/app/tests/unit -import ${CMAKE_BINARY_DIR}/backend
                     WORKING_DIRECTORY ./app)
 
-add_custom_target("run" /usr/bin/qmlscene -I ${CMAKE_BINARY_DIR}/backend  ${CMAKE_SOURCE_DIR}/app/CookingCalc.qml
+add_custom_target("run" /usr/bin/qmlscene -I ${CMAKE_BINARY_DIR}/backend  ${CMAKE_SOURCE_DIR}/app/CookingCalculator.qml
                     WORKING_DIRECTORY ./app)
 
 # Normally QtCreator would only show files that are part of a target, but we need it to show also files 
 # that are not compiled. Therefore we add a custom target that just does nothing but list the files 
-add_custom_target("cookingcalc_ClickFiles" ALL SOURCES "CookingCalc.apparmor" "manifest.json.in")
+add_custom_target("cookingcalculator_ClickFiles" ALL SOURCES "CookingCalculator.apparmor" "manifest.json.in")
 

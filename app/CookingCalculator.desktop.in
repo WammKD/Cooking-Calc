@@ -1,6 +1,6 @@
 [Desktop Entry]
-_Name=CookingCalc
-Comment=Just a place-holder
+_Name=CookingCalculator
+Comment=My project description
 Exec=@EXEC@
 Icon=@ICON@
 Terminal=false

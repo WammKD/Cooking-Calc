@@ -1,12 +1,12 @@
 {
     "name": "@APP_ID@",
-    "description": "description of CookingCalc",
+    "description": "description of CookingCalculator",
     "architecture": "@CLICK_ARCH@",
     "title": "@APP_NAME@",
     "hooks": {
-        "CookingCalc": {
-            "apparmor": "CookingCalc.apparmor",
-            "desktop":  "CookingCalc.desktop"
+        "CookingCalculator": {
+            "apparmor": "CookingCalculator.apparmor",
+            "desktop":  "CookingCalculator.desktop"
         }
     },
     "version": "0.1",
