@@ -114,14 +114,12 @@ MainView {
       }
 
       OptionSelector {
-	id        : selector_from;
-	objectName: "selector_from";
-	text      : "Initial Value";
-	width     : parent.width;
-	model     : ["Value 1", "Value 2", "Value 3", "Value 4"];
-	onSelectedIndexChanged: {
-	  convert();
-	}
+	id                    : selector_from;
+	objectName            : "selector_from";
+	text                  : "Initial Value";
+	width                 : parent.width;
+	model                 : ["Value 1", "Value 2", "Value 3", "Value 4"];
+	onSelectedIndexChanged: convert();
       }
 
       TextField {
@@ -136,9 +134,7 @@ MainView {
 	font.pixelSize  : FontUtils.sizeToPixels("medium");
 	inputMethodHints: Qt.ImhFormattedNumbersOnly;
 	text            : '0.0';
-	onTextChanged   : {
-	  convert();
-	}
+	onTextChanged   : convert();
       }
 
       OptionSelector {
@@ -147,24 +143,14 @@ MainView {
 	text                  : "\n\nResulting Value";
 	width                 : parent.width;
 	model                 : ["Value 1", "Value 2", "Value 3", "Value 4"];
-	onSelectedIndexChanged: {
-	  convert();
-	}
+	onSelectedIndexChanged: convert();
       }
-
-      /* Label { */
-      /* 	id       : result_to; */
-      /* 	text     : '0.0'; */
-      /* 	/\* font.italic: true; *\/ */
-      /* 	anchors.horizontalCenter: parent.horizontalCenter; */
-      /* /\* fontSize: "large"; *\/ */
-      /* } */
     }
 
     Rectangle {
       id    : result;
       color : UbuntuColors.silk;
-      height: result_to.height * 1.2;
+      height: result_to.height * 1.3;
       width : parent.width;
 
       anchors {
@@ -174,11 +160,14 @@ MainView {
       }
 
       Label {
-    	id                    : result_to;
-    	text                  : '0';
-    	anchors.verticalCenter: parent.verticalCenter;
-	anchors.leftMargin    : units.gu(3);
-	anchors.left          : parent.left;
+    	id  : result_to;
+    	text: '0';
+
+	anchors {
+    	  verticalCenter: parent.verticalCenter;
+	  leftMargin    : units.gu(3);
+	  left          : parent.left;
+	}
       }
     }
 
@@ -187,9 +176,7 @@ MainView {
       width    : parent.width - 2 * units.gu(2);
       height   : units.gu(5);
       color    : UbuntuColors.red;
-      onClicked: {
-	input_from.text = Number(parseFloat(result_to.text));
-      }
+      onClicked: input_from.text = Number(parseFloat(result_to.text));
 
       anchors {
 	topMargin   : units.gu(6);
