@@ -68,17 +68,56 @@ MainView {
 
   property var current_table: vols;
 
+  function convert() {
+    var orig = input.text;
+    var fin  = Number(parseFloat(orig));
+    values.text    = "";
+    var end  = " \n";
+
+    for(var t in current_table) {
+      values.text = values.text +
+                    (!(fin == orig) ?
+		     "" : (current_table == temps ?
+			   temps[s_m.model[s_m.selectedIndex]][t](fin) :
+			   fin * current_table[s_m.model[s_m.selectedIndex]] /
+		                 current_table[t])) + end;
+    }
+  }
+
+  function initializePage() {
+    s_m.model = Object.keys(current_table);
+    var v = "";
+    var m = "";
+    
+    for(var k in current_table) {
+      v = v + "0 \n";
+      m = m + k + "\n";
+    }
+
+    values.text = v;
+    measurements.text = m;
+  }
+
   PageHeader {
     title    : i18n.tr("Cooking Calculator");
     extension: Sections {
+                 id     : sects;
                  actions: [Action {
 			     text       : i18n.tr("Products");
 			     onTriggered: {
+			       current_table = vols;
+			       s_p.visible = true;
+			       mass_title.visible = false;
+			       initializePage();
 			     }
 			   },
 			   Action {
 			     text       : i18n.tr("Temperatures");
 			     onTriggered: {
+			       current_table = temps;
+			       s_p.visible = false;
+			       mass_title.visible = true;
+			       initializePage();
 			     }
 			   },
 			   Action {
@@ -94,10 +133,8 @@ MainView {
 		 }
                }
 
-    Column {
-      id        : products;
-      objectName: "products";
-      spacing   : units.gu(1);
+    ScrollView {
+      height: main_view.height - (parent.height + sects.height);
 
       anchors {
         margins: units.gu(2);
@@ -106,71 +143,93 @@ MainView {
 	right  : parent.right;
       }
 
-      OptionSelector {
-	id                    : selector_product;
-	objectName            : "selector_product";
-	/* text                  : i18n.tr("Product"); */
-	width                 : parent.width;
-	containerHeight       : itemHeight * 4;
-	model                 : ["Shit", "Fuck", "Damn"];
-	onSelectedIndexChanged: ;
-      }
+      Column {
+	objectName: "products";
+	spacing   : units.gu(1);
 
-      OptionSelector {
-	id                    : selector_measurement;
-	objectName            : "selector_measurement";
-	/* text                  : i18n.tr("Measurement"); */
-	width                 : parent.width;
-	containerHeight       : itemHeight * 4;
-	model                 : ["Shit", "Fuck", "Damn"];
-	onSelectedIndexChanged: ;
-      }
+	OptionSelector {
+	  id                    : s_p;  // because it's long, otherwise
+	  objectName            : "selector_product";
+	  width                 : parent.width;
+	  containerHeight       : itemHeight * 4;
+	  model                 : ["Shit", "Fuck", "Damn"];
+	  onSelectedIndexChanged: ;
+        }
 
-      /* Label { */
-      /* 	text: i18n.tr("Amount\n"); */
-      /* } */
+        OptionSelector {
+	  id                    : s_m;  // because it's long, otherwise
+	  objectName            : "selector_measurement";
+	  /* text                  : i18n.tr("Measurement"); */
+	  width                 : parent.width;
+	  containerHeight       : itemHeight * 4;
+	  model                 : [];
+	  onSelectedIndexChanged: convert();
+	}
 
-      TextField {
-	id              : input;
-	objectName      : "input";
-	errorHighlight  : false;
-	validator       : DoubleValidator {
-	                    notation: DoubleValidator.StandardNotation;
-	                  }
-	height          : units.gu(5);
-	width           : parent.width;
-	font.pixelSize  : FontUtils.sizeToPixels("medium");
-	inputMethodHints: Qt.ImhFormattedNumbersOnly;
-	text            : '0.0';
-	onTextChanged   : ;
-      }
+	TextField {
+	  id              : input;
+	  objectName      : "input";
+	  errorHighlight  : false;
+	  validator       : DoubleValidator {
+	                      notation: DoubleValidator.StandardNotation;
+	                    }
+	  height          : units.gu(5);
+	  width           : parent.width;
+	  font.pixelSize  : FontUtils.sizeToPixels("medium");
+	  inputMethodHints: Qt.ImhFormattedNumbersOnly;
+	  text            : '0.0';
+	  onTextChanged   : convert();
+	}
 
-      Label {
-	text     : i18n.tr("\nVolume");
-	color    : UbuntuColors.purple;
-	font.bold: true;
-	fontSize : "Large";
-      }
+	Label {
+	  text     : i18n.tr("\nVolume");
+	  color    : UbuntuColors.purple;
+	  font.bold: true;
+	  fontSize : "Large";
+	}
 
-      Label {
-	text          : "This <b>is</b> just a text;\nHell yeah!";
-	lineHeight    : units.gu(3);
-	lineHeightMode: Text.FixedHeight;
-      }
+	Row {
+	  Label {
+	    id            : values;
+	    text          : "Place";
+	    lineHeight    : units.gu(3);
+	    lineHeightMode: Text.FixedHeight;
+	  }
 
-      Label {
-	text     : i18n.tr("\nMass");
-	color    : UbuntuColors.purple;
-	font.bold: true;
-	fontSize : "Large";
-      }
+	  Label {
+	    id            : measurements;
+	    text          : "Holder";
+	    font.bold     : true;
+	    lineHeight    : units.gu(3);
+	    lineHeightMode: Text.FixedHeight;
+	  }
+	}
 
-      Label {
-	text: "Fuck!\nShit!";
-	lineHeight    : units.gu(3);
-	lineHeightMode: Text.FixedHeight;
+	Label {
+	  id       : mass_title;
+	  text     : i18n.tr("Mass");
+	  color    : UbuntuColors.purple;
+	  font.bold: true;
+	  fontSize : "Large";
+	}
+
+	Row {
+	  Label {
+	    id            : values2;
+	    text          : "Place";
+	    lineHeight    : units.gu(3);
+	    lineHeightMode: Text.FixedHeight;
+	  }
+
+	  Label {
+	    id            : measurements2;
+	    text          : "Holder";
+	    font.bold     : true;
+	    lineHeight    : units.gu(3);
+	    lineHeightMode: Text.FixedHeight;
+	  }
+	}
       }
     }
   }
 }
-
