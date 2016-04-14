@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-14 04:19+0000\n"
+"POT-Creation-Date: 2016-04-14 08:48+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,30 +17,30 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../app/Main.qml:105
+#: ../app/Main.qml:133
 msgid "Cooking Calculator"
 msgstr ""
 
-#: ../app/Main.qml:109
+#: ../app/Main.qml:137
 msgid "Products"
 msgstr ""
 
-#: ../app/Main.qml:119
+#: ../app/Main.qml:147
 msgid "Temperatures"
 msgstr ""
 
-#: ../app/Main.qml:129
+#: ../app/Main.qml:157
 msgid "Guides"
 msgstr ""
 
-#: ../app/Main.qml:191
+#: ../app/Main.qml:217
 msgid ""
 "\n"
 "Volume"
 msgstr ""
 
-#: ../app/Main.qml:216
-msgid "Mass"
+#: ../app/Main.qml:242
+msgid "Weight"
 msgstr ""
 
 #: /home/jaft/Ubuntu/build-CookingCalculator-UbuntuSDK_for_armhf_GCC_ubuntu_sdk_15_04_vivid-Default/po/CookingCalculator.desktop.in.h:1
