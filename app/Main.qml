@@ -68,34 +68,37 @@ MainView {
 
   property var current_table: vols;
 
-  function convert() {
-    var orig = input.text;
-    var fin  = Number(parseFloat(orig));
-    values.text    = "";
-    var end  = " \n";
+  function textAccumulation(t, f, o, e) {
+    return values.text + (!(f == o) ? "" :
+			  (current_table == temps ?
+			   temps[s_m.model[s_m.selectedIndex]][t](f) :
+			   f * current_table[s_m.model[s_m.selectedIndex]] /
+			       current_table[t])) + e;
+  }
 
-    for(var t in current_table) {
-      values.text = values.text +
-                    (!(fin == orig) ?
-		     "" : (current_table == temps ?
-			   temps[s_m.model[s_m.selectedIndex]][t](fin) :
-			   fin * current_table[s_m.model[s_m.selectedIndex]] /
-		                 current_table[t])) + end;
+  function convert() {
+    var orig    = input.text;
+    var fin     = Number(parseFloat(orig));
+    values.text = "";
+    var end     = " \n";
+
+    for(var tex in current_table) {
+      values.text = textAccumulation(tex, fin, orig, end);
     }
   }
 
   function initializePage() {
-    s_m.model = Object.keys(current_table);
-    var v = "";
-    var m = "";
+    s_m.model         = Object.keys(current_table);
+    var orig          = '0.0';
+    var fin           = Number(parseFloat(orig));
+    var end           = " \n"
+    values.text       = "";
+    measurements.text = "";
     
     for(var k in current_table) {
-      v = v + "0 \n";
-      m = m + k + "\n";
+      values.text       = textAccumulation(k, fin, orig, end);
+      measurements.text = measurements.text + k + end;
     }
-
-    values.text = v;
-    measurements.text = m;
   }
 
   PageHeader {
@@ -107,8 +110,8 @@ MainView {
 			     onTriggered: {
 			       current_table = vols;
 			       s_p.visible = true;
-			       mass_title.visible = false;
-			       mass_row.visible = false;
+			       mass_title.visible = true;
+			       mass_row.visible = true;
 			       initializePage();
 			     }
 			   },
@@ -117,8 +120,8 @@ MainView {
 			     onTriggered: {
 			       current_table = temps;
 			       s_p.visible = false;
-			       mass_title.visible = true;
-			       mass_row.visible = true;
+			       mass_title.visible = false;
+			       mass_row.visible = false;
 			       initializePage();
 			     }
 			   },
