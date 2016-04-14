@@ -92,22 +92,37 @@ MainView {
 
   property var current_table: vols;
 
-  function textAccumulation(t, f, o, e) {
-    return values.text + (!(f == o) ? "" :
-			  (current_table == temps ?
-			   temps[s_m.model[s_m.selectedIndex]][t](f) :
-			   f * current_table[s_m.model[s_m.selectedIndex]] /
-			       current_table[t])) + e;
+  function textAccumulation(t, f, o) {
+    var weight = weights[s_m.model[s_m.selectedIndex]];
+
+    return (!(f == o) ?  // This is horrid; clean up.
+	    "" : (weight ? f * weight / foods[s_p.model[s_p.selectedIndex]] /
+		           current_table[t] :
+			   (current_table == temps ?
+			    temps[s_m.model[s_m.selectedIndex]][t](f) :
+			    f * current_table[s_m.model[s_m.selectedIndex]] /
+			    current_table[t])));
+  }
+  function textAccumulation2(t, f, o, e) {
+    return values2.text + (!(f == o) ?
+			   "" : textAccumulation("Tablespoons", f, o) *
+                                foods[s_p.model[s_p.selectedIndex]] /
+				weights[t]) + e;
   }
 
   function convert() {
-    var orig    = input.text;
-    var fin     = Number(parseFloat(orig));
-    values.text = "";
-    var end     = " \n";
+    var orig     = input.text;
+    var fin      = Number(parseFloat(orig));
+    values.text  = "";
+    values2.text = "";
+    var end      = " \n";
 
     for(var tex in current_table) {
-      values.text = textAccumulation(tex, fin, orig, end);
+      values.text = values.text + textAccumulation(tex, fin, orig) + end;
+    }
+
+    for(var p in weights) {
+      values2.text = textAccumulation2(p, fin, orig, end);
     }
   }
 
@@ -116,16 +131,23 @@ MainView {
     if(current_table == vols) {
       s_m.model = s_m.model.concat(Object.keys(weights)).sort();
     }
-    s_p.model         = Object.keys(foods);
-    var orig          = input.text;
-    var fin           = Number(parseFloat(orig));
-    var end           = " \n"
-    values.text       = "";
-    measurements.text = "";
+    s_p.model          = Object.keys(foods);
+    var orig           = input.text;
+    var fin            = Number(parseFloat(orig));
+    var end            = " \n"
+    values.text        = "";
+    values2.text       = "";
+    measurements.text  = "";
+    measurements2.text = "";
     
     for(var k in current_table) {
-      values.text       = textAccumulation(k, fin, orig, end);
+      values.text       = values.text + textAccumulation(k, fin, orig) + end;
       measurements.text = measurements.text + k + end;
+    }
+
+    for(var p in weights) {
+      values2.text       = textAccumulation2(p, fin, orig, end);
+      measurements2.text = measurements2.text + p + end;
     }
   }
 
@@ -186,7 +208,7 @@ MainView {
 	  width                 : main_view.width - units.gu(2) * 2;
 	  containerHeight       : itemHeight * 4;
 	  model                 : [];
-	  onSelectedIndexChanged: ;
+	  onSelectedIndexChanged: convert();
         }
 
         OptionSelector {
