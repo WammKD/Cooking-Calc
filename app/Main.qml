@@ -108,6 +108,7 @@ MainView {
 			       current_table = vols;
 			       s_p.visible = true;
 			       mass_title.visible = false;
+			       mass_row.visible = false;
 			       initializePage();
 			     }
 			   },
@@ -117,6 +118,7 @@ MainView {
 			       current_table = temps;
 			       s_p.visible = false;
 			       mass_title.visible = true;
+			       mass_row.visible = true;
 			       initializePage();
 			     }
 			   },
@@ -150,7 +152,7 @@ MainView {
 	OptionSelector {
 	  id                    : s_p;  // because it's long, otherwise
 	  objectName            : "selector_product";
-	  width                 : parent.width;
+	  width                 : main_view.width - units.gu(2) * 2;
 	  containerHeight       : itemHeight * 4;
 	  model                 : ["Shit", "Fuck", "Damn"];
 	  onSelectedIndexChanged: ;
@@ -160,7 +162,7 @@ MainView {
 	  id                    : s_m;  // because it's long, otherwise
 	  objectName            : "selector_measurement";
 	  /* text                  : i18n.tr("Measurement"); */
-	  width                 : parent.width;
+	  width                 : main_view.width - units.gu(2) * 2;
 	  containerHeight       : itemHeight * 4;
 	  model                 : [];
 	  onSelectedIndexChanged: convert();
@@ -174,7 +176,7 @@ MainView {
 	                      notation: DoubleValidator.StandardNotation;
 	                    }
 	  height          : units.gu(5);
-	  width           : parent.width;
+	  width           : main_view.width - units.gu(2) * 2;
 	  font.pixelSize  : FontUtils.sizeToPixels("medium");
 	  inputMethodHints: Qt.ImhFormattedNumbersOnly;
 	  text            : '0.0';
@@ -214,6 +216,8 @@ MainView {
 	}
 
 	Row {
+	  id: mass_row;
+
 	  Label {
 	    id            : values2;
 	    text          : "Place";
