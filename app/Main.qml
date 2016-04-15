@@ -1,5 +1,6 @@
 import QtQuick 2.4
 import Ubuntu.Components 1.3
+import "fraction.js" as Fraction
 
 /*!
  *  \brief MainView with Tabs element.
@@ -108,6 +109,8 @@ MainView {
 			  "Micrograms"        : 1e-06 };
 
   property var current_table: vols;
+
+  property var fraction: Fraction["Fraction"];
 
   function textAccumulation(t, f, o) {
     var weight = weights[s_m.model[s_m.selectedIndex]];
