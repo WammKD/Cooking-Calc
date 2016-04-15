@@ -128,6 +128,11 @@ MainView {
 
   property var fraction: Fraction["Fraction"];
 
+  function round(n) {
+    return n.toFixed(2);
+  /* Math.round((n + 0.00001) * 100) / 100; */
+  }
+
   function textAccumulation(t, f, o) {
     var weight = weights[s_m.model[s_m.selectedIndex]];
 
@@ -139,11 +144,9 @@ MainView {
 			    f * current_table[s_m.model[s_m.selectedIndex]] /
 			    current_table[t])));
   }
-  function textAccumulation2(t, f, o, e) {
-    return values2.text + (!(f == o) ?
-			   "" : textAccumulation("Tablespoons (U. S.)", f, o) *
-                                foods[s_p.model[s_p.selectedIndex]] /
-				weights[t]) + e;
+  function textAccumulation2(t, f, o) {
+    return (!(f == o) ? "" : textAccumulation("Tablespoons (U. S.)", f, o) *
+                             foods[s_p.model[s_p.selectedIndex]] / weights[t]);
   }
 
   function convert(init_page) {
@@ -155,24 +158,39 @@ MainView {
 
       s_p.model          = Object.keys(foods);
       measurements.text  = "";
+      var or_filler      = "or"
+      or.text            = "";
       measurements2.text = "";
     }
 
-    var orig     = input.text;
-    var fin      = Number(parseFloat(orig));
-    var end      = " \n";
-    values.text  = "";
-    values2.text = "";
+    var orig       = input.text;
+    var fin        = Number(parseFloat(orig));
+    var end        = "\u00A0\u00A0\u00A0\n";
+    values.text    = "";
+    fractions.text = "";
+    values2.text   = "";
 
-    for(var tex in current_table) {
-      values.text = values.text + textAccumulation(tex, fin, orig) + end;
+    for(var k in current_table) {
+      var r = round(textAccumulation(k, fin, orig))
+
+      values.text = values.text + r + end;
+      if(current_table != temps) {
+	fractions.text = fractions.text + (new fraction(r)).toString() + end;
+      }
+
       if(init_page) {
-	measurements.text = measurements.text + tex + end;
+	if(current_table != temps) {
+	  or.text = or.text + or_filler + end;
+	}
+	measurements.text = measurements.text + k + end;
       }
     }
 
     for(var p in weights) {
-      values2.text = textAccumulation2(p, fin, orig, end);
+      var r = round(textAccumulation2(p, fin, orig));
+
+      values2.text = values2.text + r + end;
+
       if(init_page) {
 	measurements2.text = measurements2.text + p + end;
       }
@@ -271,9 +289,26 @@ MainView {
 	}
 
 	Row {
+	  spacing: 0;
+
 	  Label {
 	    id            : values;
 	    text          : "Place";
+	    lineHeight    : units.gu(3);
+	    lineHeightMode: Text.FixedHeight;
+	  }
+
+	  Label {
+	    id            : or;
+	    text          : "or";
+	    font.italic   : true;
+	    lineHeight    : units.gu(3);
+	    lineHeightMode: Text.FixedHeight;
+	  }
+
+	  Label {
+	    id            : fractions;
+	    text          : "frac";
 	    lineHeight    : units.gu(3);
 	    lineHeightMode: Text.FixedHeight;
 	  }
@@ -297,6 +332,7 @@ MainView {
 
 	Row {
 	  id     : weight_row;
+	  spacing: 0;
 
 	  Label {
 	    id            : values2;
