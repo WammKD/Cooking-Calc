@@ -96,7 +96,23 @@ MainView {
 			  "Chickpeas"                     : 12.500000027,
 			  "Cinnamon"                      : 7.800000017,
 			  "Coconut (shredded, disiccated)": 5.8125,
-			  "Coffee (ground)"               : 0.6625 };
+			  "Coffee (ground)"               : 0.6625,
+			  "Cottage Cheese"                : 20,
+			  "Cranberries (dried)"           : 7.5,
+			  "Cranberries (fresh or frozen)" : 6.1875,
+			  "Cream"                         : 15,
+			  "Flour (corn)"                  : 9.375,
+			  "Flour (potato)"                : 10,
+			  "Flour (soy)"                   : 5.25,
+			  "Flour (all-purpose)"           : 7.8125,
+			  "Flour (whole wheat)"           : 8.09986375,
+			  "Flour (wholemeal)"             : 8.09986375,
+			  "Gelatin"                       : 9.25,
+			  "Hazelnuts (finely chopped)"    : 13.75,
+			  "Honey"                         : 21.25,
+			  "Jam"                           : 20.3125,
+			  "Ketchup (Catsup)"              : 17.000000036,
+			  "Lard"                          : 12.8125 };
   property var weights: { "Grams"             : 1,
 			  "Ounces"            : 28.349523124662777,
 			  "Pounds"            : 453.5923700100354,
@@ -130,44 +146,36 @@ MainView {
 				weights[t]) + e;
   }
 
-  function convert() {
+  function convert(init_page) {
+    if(init_page) {
+      s_m.model   = Object.keys(current_table);
+      if(current_table == vols) {
+	s_m.model = s_m.model.concat(Object.keys(weights)).sort();
+      }
+
+      s_p.model          = Object.keys(foods);
+      measurements.text  = "";
+      measurements2.text = "";
+    }
+
     var orig     = input.text;
     var fin      = Number(parseFloat(orig));
+    var end      = " \n";
     values.text  = "";
     values2.text = "";
-    var end      = " \n";
 
     for(var tex in current_table) {
       values.text = values.text + textAccumulation(tex, fin, orig) + end;
+      if(init_page) {
+	measurements.text = measurements.text + tex + end;
+      }
     }
 
     for(var p in weights) {
       values2.text = textAccumulation2(p, fin, orig, end);
-    }
-  }
-
-  function initializePage() {
-    s_m.model         = Object.keys(current_table);
-    if(current_table == vols) {
-      s_m.model = s_m.model.concat(Object.keys(weights)).sort();
-    }
-    s_p.model          = Object.keys(foods);
-    var orig           = input.text;
-    var fin            = Number(parseFloat(orig));
-    var end            = " \n"
-    values.text        = "";
-    values2.text       = "";
-    measurements.text  = "";
-    measurements2.text = "";
-    
-    for(var k in current_table) {
-      values.text       = values.text + textAccumulation(k, fin, orig) + end;
-      measurements.text = measurements.text + k + end;
-    }
-
-    for(var p in weights) {
-      values2.text       = textAccumulation2(p, fin, orig, end);
-      measurements2.text = measurements2.text + p + end;
+      if(init_page) {
+	measurements2.text = measurements2.text + p + end;
+      }
     }
   }
 
@@ -182,7 +190,7 @@ MainView {
 			       weight_title.visible = true;
 			       weight_row.visible = true;
 			       current_table = vols;
-			       initializePage();
+			       convert(true);
 			     }
 			   },
 			   Action {
@@ -192,7 +200,7 @@ MainView {
 			       weight_title.visible = false;
 			       weight_row.visible = false;
 			       current_table = temps;
-			       initializePage();
+			       convert(true);
 			     }
 			   },
 			   Action {
@@ -228,7 +236,7 @@ MainView {
 	  width                 : main_view.width - units.gu(2) * 2;
 	  containerHeight       : itemHeight * 4;
 	  model                 : [];
-	  onSelectedIndexChanged: convert();
+	  onSelectedIndexChanged: convert(false);
         }
 
         OptionSelector {
@@ -237,7 +245,7 @@ MainView {
 	  width                 : main_view.width - units.gu(2) * 2;
 	  containerHeight       : itemHeight * 4;
 	  model                 : [];
-	  onSelectedIndexChanged: convert();
+	  onSelectedIndexChanged: convert(false);
 	}
 
 	TextField {
@@ -252,7 +260,7 @@ MainView {
 	  font.pixelSize  : FontUtils.sizeToPixels("medium");
 	  inputMethodHints: Qt.ImhFormattedNumbersOnly;
 	  text            : '0.0';
-	  onTextChanged   : convert();
+	  onTextChanged   : convert(false);
 	}
 
 	Label {
