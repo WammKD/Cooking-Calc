@@ -55,30 +55,47 @@ MainView {
 					"Kelvin"    : function(k) {
 					                return k;
 					              } } };
-  property var vols:    { "Tablespoons" : 1,
-			  "Teaspoons"   : 1 / 3,
-			  "Cups"        : 16,
-			  "Fluid Ounces": 2,
-			  "Pinches"     : 1 / 24,
-			  "Pints"       : 32,
-			  "Quarts"      : 64,
-			  "Gallons"     : 256,
-			  "Drops"       : 1 / 180,
-			  "Dashes"      : 1 / 48 };
+  property var vols:    { "Tablespoons (U. S.)"    : 1,
+			  "Teaspoons"              : 1 / 3,
+			  "Cups"                   : 16,
+			  "Fluid Ounces"           : 2,
+			  "Pinches"                : 1 / 24,
+			  "Pints (liquid, U. S.)"  : 32,
+			  "Pints (dry, U. S.)"     : 74.473419913 / 2,
+			  "Quarts (liquid, U. S.)" : 64,
+			  "Quarts (dry, U. S.)"    : 74.473419913,
+			  "Gallons (liquid, U. S.)": 256,
+			  "Gallons (dry, U. S.)"   : 74.473419913 * 4,
+			  "Liter"                  : 67.6280454,
+			  "Drops"                  : 1 / 180,
+			  "Dashes"                 : 1 / 48,
+			  "Gill"                   : 8,
+			  "Firkin"                 : 2304,
+			  "Hogshead"               : 16128,
+			  "Peck"                   : 74.473419913 * 8,
+			  "Bushel"                 : 74.473419913 * 32,
+			  "Cubic Inches"           : 59136 };
   // All grams equal to 1 Tbs.
-  property var foods:   { "Alcohol (ethyl)" : 11.608497559168,
-			  "Alcohol (methyl)": 11.629938368101,
-			  "Alcohol (propyl)": 11.828820354409,
-			  "Almonds (flaked)": 85 / 16,
-			  "Almonds (ground)": 100 / 16,
-			  "Baking Powder"   : 13 + 4 / 5,
-			  "Baking Soda"     : 13 + 4 / 5,
-			  "Beans (kidney)"  : 12 + 1 / 5,
-			  "Blackberries"    : 9.15,
-			  "Blueberries"     : 9.45,
-			  "Bread Crumbs"    : 120.000000254 / 16,
-			  "Buckwheat Groats": 10 + 5 / 8,
-			  "Butter"          : 14.175 };
+  property var foods:   { "Alcohol (ethyl)"               : 11.608497559168,
+			  "Alcohol (methyl)"              : 11.629938368101,
+			  "Alcohol (propyl)"              : 11.828820354409,
+			  "Almonds (flaked)"              : 85 / 16,
+			  "Almonds (ground)"              : 100 / 16,
+			  "Baking Powder"                 : 13 + 4 / 5,
+			  "Baking Soda"                   : 13 + 4 / 5,
+			  "Beans (kidney)"                : 12 + 1 / 5,
+			  "Blackberries"                  : 9.15,
+			  "Blueberries"                   : 9.45,
+			  "Bread Crumbs"                  : 120.000000254 / 16,
+			  "Buckwheat Groats"              : 10 + 5 / 8,
+			  "Butter"                        : 14.175,
+			  "Cacao"                         : 7.375,
+			  "Cheese (grated Parmesan)"      : 5,
+			  "Cheese (grated Cheddar)"       : 10,
+			  "Chickpeas"                     : 12.500000027,
+			  "Cinnamon"                      : 7.800000017,
+			  "Coconut (shredded, disiccated)": 5.8125,
+			  "Coffee (ground)"               : 0.6625 };
   property var weights: { "Grams"             : 1,
 			  "Ounces"            : 28.349523124662777,
 			  "Pounds"            : 453.5923700100354,
@@ -105,7 +122,7 @@ MainView {
   }
   function textAccumulation2(t, f, o, e) {
     return values2.text + (!(f == o) ?
-			   "" : textAccumulation("Tablespoons", f, o) *
+			   "" : textAccumulation("Tablespoons (U. S.)", f, o) *
                                 foods[s_p.model[s_p.selectedIndex]] /
 				weights[t]) + e;
   }
