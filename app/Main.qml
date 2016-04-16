@@ -124,17 +124,22 @@ MainView {
 			  "Stones"            : 6350.294971201412,
 			  "Micrograms"        : 1e-06 };
 
-  property var current_table      : vols;
+  property var current_table   : vols;
 
-  property string  values_wholes  : "";
-  property string  values_decimals: "";
-  property string values2_wholes  : "";
-  property string values2_decimals: "";
+  property string   vols_label : Object.keys(vols   ).join("\n");
+  property string weight_label : Object.keys(weights).join("\n");
+  property string  temps_label : Object.keys(temps  ).join("\n");
+  property string values_decs  : "";
+  property string values_wholes: "";
+  property string values_fracts: "";
+  property string weight_decs  : "";
+  property string weight_wholes: "";
+  property string weight_fracts: "";
 
-  property var fraction           : Fraction["Fraction"];
+  property var fraction        : Fraction["Fraction"];
 
   function round(n) {
-    return n.toFixed(2);
+    return (n === "" ? "" : n.toFixed(2));
   /* Math.round((n + 0.00001) * 100) / 100; */
   }
 
@@ -154,6 +159,25 @@ MainView {
                              foods[s_p.model[s_p.selectedIndex]] / weights[t]);
   }
 
+  function cycleTable(label_decs, label_wholes, label_fracts, f, o, e, table) {
+    if(!(current_table == temps && table == weights)) {
+      for(var item in table) {
+	var r       = round((table == weights ? textAccumulation2 :
+			                        textAccumulation)(item, f, o));
+	label_decs += r + e;
+
+	var num       = (new fraction(r)).toString().split(" ");
+	var test      = num[0].indexOf("/") > -1;
+	label_wholes += (!test ? num[0] : "0")                       + e;
+	label_fracts += ( test ? num[0] : (num[1] ? num[1] : "0/0")) + e;
+      }
+
+      return [label_decs, label_wholes, label_fracts];
+    }
+
+    return ["", "", ""];
+  }
+
   function convert(init_page) {
     if(init_page) {
       s_m.model   = Object.keys(current_table);
@@ -161,49 +185,32 @@ MainView {
 	s_m.model = s_m.model.concat(Object.keys(weights)).sort();
       }
 
-      s_p.model          = Object.keys(foods);
-      measurements.text  = "";
-      var or_filler      = "or"
-      or.text            = "";
-      measurements2.text = "";
+      s_p.model   = Object.keys(foods);
     }
 
-    var orig           = input.text;
-    var fin            = Number(parseFloat(orig));
-    var end            = "\u00A0\u00A0\u00A0\n";
-    values.text        = "";
-    whole_numbers.text = "";
-    fractions.text     = "";
-    values2.text       = "";
+    var orig       = input.text;
+    var fin        = Number(parseFloat(orig));
+    var end        = "\u00A0\u00A0\u00A0\n";
+    var temp_array = [];
 
-    for(var k in current_table) {
-      var r = round(textAccumulation(k, fin, orig))
+    temp_array    = cycleTable("", "", "", fin, orig, end, current_table);
+    values_decs   = temp_array[0];
+    values_wholes = temp_array[1];
+    values_fracts = temp_array[2];
 
-      values.text = values.text + r + end;
-      if(current_table != temps) {
-	var num            = (new fraction(r)).toString().split(" ");
-	whole_numbers.text = whole_numbers.text + num[0] + end;
-	fractions.text     = fractions.text + (num[1] ? num[1] : "0/0") + end;
-	/* fractions.text = fractions.text + (new fraction(r)).toString() + end; */
-      }
+    temp_array    = cycleTable("", "", "", fin, orig, end, weights);
+    weight_decs   = temp_array[0];
+    weight_wholes = temp_array[1];
+    weight_fracts = temp_array[2];
 
-      if(init_page) {
-	if(current_table != temps) {
-	  or.text = or.text + or_filler + end;
-	}
-	measurements.text = measurements.text + k + end;
-      }
+    if(init_page) {
+      measurements.text = (current_table == vols ? vols_label : temps_label);
     }
 
-    for(var p in weights) {
-      var r = round(textAccumulation2(p, fin, orig));
-
-      values2.text = values2.text + r + end;
-
-      if(init_page) {
-	measurements2.text = measurements2.text + p + end;
-      }
-    }
+    whole_numbers.text = (view_fracts.checked ? values_wholes : "");
+    fract_dec.text     = (view_fracts.checked ? values_fracts : values_decs);
+    weight_w_nums.text = (view_fracts.checked ? weight_wholes : "");
+    weight_f_d.text    = (view_fracts.checked ? weight_fracts : weight_decs);
   }
 
   PageHeader {
@@ -291,61 +298,26 @@ MainView {
 	}
 
 	Row {
-	  width: main_view.width - units.gu(2) * 2;
-
-	  Row {
-	    width: parent.width / 2;
-
-	    CheckBox {
-	      id       : check_decimals;
-	      checked  : true;
-	      onClicked: {
-		check_decimals.checked = !check_decimals.checked;
-
-		if(!(check_decimals.checked && !check_fractions.checked)) {
-		  check_decimals.checked = !check_decimals.checked;
-
-		  or.visible             = check_fractions.checked &&
-		                           check_decimals.checked;
-		  values.visible         = check_decimals.checked;
-		}
-	      }
-	    }
-
-	    Label {
-	      text: i18n.tr("    Decimals");
+	  Switch {
+	    id       : view_fracts;
+	    checked  : false;
+	    onClicked: {
+	      whole_numbers.text = (view_fracts.checked ? values_wholes : "");
+	      fract_dec.text     = (view_fracts.checked ? values_fracts :
+				                          values_decs);
+	      weight_w_nums.text = (view_fracts.checked ? weight_wholes : "");
+	      weight_f_d.text    = (view_fracts.checked ? weight_fracts :
+				                          weight_decs);
 	    }
 	  }
 
-	  Row {
-	    width: parent.width / 2;
-	    layoutDirection: Qt.RightToLeft;
-
-	    CheckBox {
-	      id       : check_fractions;
-	      checked  : false;
-	      onClicked: {
-		check_fractions.checked = !check_fractions.checked;
-
-		if(!(check_fractions.checked && !check_decimals.checked)) {
-		  check_fractions.checked = !check_fractions.checked;
-
- 		  or.visible              = check_fractions.checked &&
-		                            check_decimals.checked;
-		  whole_numbers.visible   = check_fractions.checked;
-		  fractions.visible       = check_fractions.checked;
-		}
-	      }
-	    }
-
-	    Label {
-	      text: i18n.tr("Fractions    ");
-	    }
+	  Label {
+	    text: i18n.tr("    View Fractions");
 	  }
 	}
 
 	Label {
-	  text     : i18n.tr("\nVolume");
+	  text     : i18n.tr("\n\nVolume");
 	  color    : UbuntuColors.purple;
 	  font.bold: true;
 	  fontSize : "Large";
@@ -353,22 +325,6 @@ MainView {
 
 	Row {
 	  spacing: 0;
-
-	  Label {
-	    id                 : values;
-	    text               : "Place";
-	    lineHeight         : units.gu(3);
-	    lineHeightMode     : Text.FixedHeight;
-	    horizontalAlignment: Text.AlignRight;
-	  }
-
-	  Label {
-	    id            : or;
-	    text          : "or";
-	    font.italic   : true;
-	    lineHeight    : units.gu(3);
-	    lineHeightMode: Text.FixedHeight;
-	  }
 
 	  Label {
 	    id                 : whole_numbers;
@@ -379,7 +335,7 @@ MainView {
 	  }
 
 	  Label {
-	    id                 : fractions;
+	    id                 : fract_dec;
 	    text               : "frac";
 	    lineHeight         : units.gu(3);
 	    lineHeightMode     : Text.FixedHeight;
@@ -388,7 +344,7 @@ MainView {
 
 	  Label {
 	    id            : measurements;
-	    text          : "Holder";
+	    text          : vols_label;
 	    font.bold     : true;
 	    lineHeight    : units.gu(3);
 	    lineHeightMode: Text.FixedHeight;
@@ -408,7 +364,7 @@ MainView {
 	  spacing: 0;
 
 	  Label {
-	    id                 : values2;
+	    id                 : weight_w_nums;
 	    text               : "Place";
 	    lineHeight         : units.gu(3);
 	    lineHeightMode     : Text.FixedHeight;
@@ -416,8 +372,15 @@ MainView {
 	  }
 
 	  Label {
-	    id            : measurements2;
-	    text          : "Holder";
+	    id                 : weight_f_d;
+	    text               : "frac";
+	    lineHeight         : units.gu(3);
+	    lineHeightMode     : Text.FixedHeight;
+	    horizontalAlignment: Text.AlignRight;
+	  }
+
+	  Label {
+	    text          : weight_label;
 	    font.bold     : true;
 	    lineHeight    : units.gu(3);
 	    lineHeightMode: Text.FixedHeight;
