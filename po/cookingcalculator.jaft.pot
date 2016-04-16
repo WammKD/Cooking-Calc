@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-16 00:46+0000\n"
+"POT-Creation-Date: 2016-04-16 01:57+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -33,21 +33,21 @@ msgstr ""
 msgid "Guides"
 msgstr ""
 
-#: ../app/Main.qml:301
-msgid "Decimals"
+#: ../app/Main.qml:311
+msgid "    Decimals"
 msgstr ""
 
-#: ../app/Main.qml:309
-msgid "Fractions"
+#: ../app/Main.qml:337
+msgid "Fractions    "
 msgstr ""
 
-#: ../app/Main.qml:321
+#: ../app/Main.qml:343
 msgid ""
 "\n"
 "Volume"
 msgstr ""
 
-#: ../app/Main.qml:373
+#: ../app/Main.qml:395
 msgid "Weight"
 msgstr ""
 

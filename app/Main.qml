@@ -124,9 +124,14 @@ MainView {
 			  "Stones"            : 6350.294971201412,
 			  "Micrograms"        : 1e-06 };
 
-  property var current_table: vols;
+  property var current_table      : vols;
 
-  property var fraction     : Fraction["Fraction"];
+  property string  values_wholes  : "";
+  property string  values_decimals: "";
+  property string values2_wholes  : "";
+  property string values2_decimals: "";
+
+  property var fraction           : Fraction["Fraction"];
 
   function round(n) {
     return n.toFixed(2);
@@ -286,7 +291,7 @@ MainView {
 	}
 
 	Row {
-	  width: parent.width;
+	  width: main_view.width - units.gu(2) * 2;
 
 	  Row {
 	    width: parent.width / 2;
@@ -294,25 +299,47 @@ MainView {
 	    CheckBox {
 	      id       : check_decimals;
 	      checked  : true;
-	      onClicked: print(decimals.checked);
+	      onClicked: {
+		check_decimals.checked = !check_decimals.checked;
+
+		if(!(check_decimals.checked && !check_fractions.checked)) {
+		  check_decimals.checked = !check_decimals.checked;
+
+		  or.visible             = check_fractions.checked &&
+		                           check_decimals.checked;
+		  values.visible         = check_decimals.checked;
+		}
+	      }
 	    }
 
 	    Label {
-	      text: i18n.tr("Decimals");
+	      text: i18n.tr("    Decimals");
 	    }
 	  }
 
 	  Row {
+	    width: parent.width / 2;
 	    layoutDirection: Qt.RightToLeft;
-
-	    Label {
-	      text: i18n.tr("Fractions");
-	    }
 
 	    CheckBox {
 	      id       : check_fractions;
-	      checked  : true;
-	      onClicked: print(decimals.checked);
+	      checked  : false;
+	      onClicked: {
+		check_fractions.checked = !check_fractions.checked;
+
+		if(!(check_fractions.checked && !check_decimals.checked)) {
+		  check_fractions.checked = !check_fractions.checked;
+
+ 		  or.visible              = check_fractions.checked &&
+		                            check_decimals.checked;
+		  whole_numbers.visible   = check_fractions.checked;
+		  fractions.visible       = check_fractions.checked;
+		}
+	      }
+	    }
+
+	    Label {
+	      text: i18n.tr("Fractions    ");
 	    }
 	  }
 	}
