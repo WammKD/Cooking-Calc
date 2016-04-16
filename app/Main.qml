@@ -1,6 +1,7 @@
-import QtQuick 2.4
-import Ubuntu.Components 1.3
 import "fraction.js" as Fraction
+import QtQuick 2.4
+import QtSensors 5.0
+import Ubuntu.Components 1.3
 
 /*!
  *  \brief MainView with Tabs element.
@@ -9,12 +10,12 @@ import "fraction.js" as Fraction
  */
 
 MainView {
-  id             : main_view;
+  id                 : main_view;
   // objectName for functional testing purposes (autopilot-qt5)
-  objectName     : "main_view";
+  objectName         : "main_view";
 
   // Note! applicationName needs to match the "name" field of click manifest
-  applicationName: "cookingcalculator.jaft";
+  applicationName    : "cookingcalculator.jaft";
 
   /*
    *  This property enables the application to change orientation
@@ -23,8 +24,9 @@ MainView {
   //automaticOrientation: true;
 
 
-  width          : units.gu(100);
-  height         : units.gu(75);
+  width              : units.gu(100);
+  height             : units.gu(75);
+  property real margs: units.gu(2);
 
   property var temps: { "Fahrenheit": { "Fahrenheit": function(f) {
 					                return f;
@@ -168,8 +170,10 @@ MainView {
 
 	var num       = (new fraction(r)).toString().split(" ");
 	var test      = num[0].indexOf("/") > -1;
-	label_wholes += (!test ? num[0] : "0")                       + e;
-	label_fracts += ( test ? num[0] : (num[1] ? num[1] : "0/0")) + e;
+	label_wholes += (!(f == o) ? "" :
+			 (!test ? num[0] : "0"))                       + e;
+	label_fracts += (!(f == o) ? "" :
+			 ( test ? num[0] : (num[1] ? num[1] : "0/0"))) + e;
       }
 
       return [label_decs, label_wholes, label_fracts];
@@ -245,7 +249,7 @@ MainView {
 
 		 anchors {
 		   left      : parent.left;
-		   leftMargin: units.gu(2);
+		   leftMargin: margs;
 		   bottom    : parent.bottom;
 		 }
                }
@@ -254,7 +258,7 @@ MainView {
       height: main_view.height - (parent.height + sects.height);
 
       anchors {
-        margins: units.gu(2);
+        margins: margs;
 	top    : parent.bottom;
 	left   : parent.left;
 	right  : parent.right;
@@ -267,7 +271,7 @@ MainView {
 	OptionSelector {
 	  id                    : s_p;  // because it's long, otherwise
 	  objectName            : "selector_product";
-	  width                 : main_view.width - units.gu(2) * 2;
+	  width                 : main_view.width - margs * 2;
 	  containerHeight       : itemHeight * 4;
 	  model                 : [];
 	  onSelectedIndexChanged: convert(false);
@@ -276,7 +280,7 @@ MainView {
         OptionSelector {
 	  id                    : s_m;  // because it's long, otherwise
 	  objectName            : "selector_measurement";
-	  width                 : main_view.width - units.gu(2) * 2;
+	  width                 : main_view.width - margs * 2;
 	  containerHeight       : itemHeight * 4;
 	  model                 : [];
 	  onSelectedIndexChanged: convert(false);
@@ -290,7 +294,7 @@ MainView {
 	                      notation: DoubleValidator.StandardNotation;
 	                    }
 	  height          : units.gu(5);
-	  width           : main_view.width - units.gu(2) * 2;
+	  width           : main_view.width - margs * 2;
 	  font.pixelSize  : FontUtils.sizeToPixels("medium");
 	  inputMethodHints: Qt.ImhFormattedNumbersOnly;
 	  text            : '0.0';
@@ -321,29 +325,37 @@ MainView {
 	  color    : UbuntuColors.purple;
 	  font.bold: true;
 	  fontSize : "Large";
+	  anchors.horizontalCenter: parent.horizontalCenter;
 	}
 
 	Row {
+	  id     : values_row;
 	  spacing: 0;
 
-	  Label {
-	    id                 : whole_numbers;
-	    text               : "wholes";
-	    lineHeight         : units.gu(3);
-	    lineHeightMode     : Text.FixedHeight;
-	    horizontalAlignment: Text.AlignRight;
-	  }
+	  Row {
+	    width          : (main_view.width - 2 * margs) / 2;
+	    layoutDirection: Qt.RightToLeft;
 
-	  Label {
-	    id                 : fract_dec;
-	    text               : "frac";
-	    lineHeight         : units.gu(3);
-	    lineHeightMode     : Text.FixedHeight;
-	    horizontalAlignment: Text.AlignRight;
+	    Label {
+	      id                 : fract_dec;
+	      text               : "frac";
+	      lineHeight         : units.gu(3);
+	      lineHeightMode     : Text.FixedHeight;
+	      horizontalAlignment: Text.AlignRight;
+	    }
+
+	    Label {
+	      id                 : whole_numbers;
+	      text               : "wholes";
+	      lineHeight         : units.gu(3);
+	      lineHeightMode     : Text.FixedHeight;
+	      horizontalAlignment: Text.AlignRight;
+	    }
 	  }
 
 	  Label {
 	    id            : measurements;
+	    width         : (main_view.width - 2 * margs) / 2;
 	    text          : vols_label;
 	    font.bold     : true;
 	    lineHeight    : units.gu(3);
@@ -357,30 +369,37 @@ MainView {
 	  color    : UbuntuColors.purple;
 	  font.bold: true;
 	  fontSize : "Large";
+	  anchors.horizontalCenter: parent.horizontalCenter;
 	}
 
 	Row {
 	  id     : weight_row;
 	  spacing: 0;
 
-	  Label {
-	    id                 : weight_w_nums;
-	    text               : "Place";
-	    lineHeight         : units.gu(3);
-	    lineHeightMode     : Text.FixedHeight;
-	    horizontalAlignment: Text.AlignRight;
-	  }
+	  Row {
+	    width          : (main_view.width - 2 * margs) / 2;
+	    layoutDirection: Qt.RightToLeft;
 
-	  Label {
-	    id                 : weight_f_d;
-	    text               : "frac";
-	    lineHeight         : units.gu(3);
-	    lineHeightMode     : Text.FixedHeight;
-	    horizontalAlignment: Text.AlignRight;
+	    Label {
+	      id                 : weight_f_d;
+	      text               : "frac";
+	      lineHeight         : units.gu(3);
+	      lineHeightMode     : Text.FixedHeight;
+	      horizontalAlignment: Text.AlignRight;
+	    }
+
+	    Label {
+	      id                 : weight_w_nums;
+	      text               : "Place";
+	      lineHeight         : units.gu(3);
+	      lineHeightMode     : Text.FixedHeight;
+	      horizontalAlignment: Text.AlignRight;
+	    }
 	  }
 
 	  Label {
 	    text          : weight_label;
+	    width         : (main_view.width - 2 * margs) / 2;
 	    font.bold     : true;
 	    lineHeight    : units.gu(3);
 	    lineHeightMode: Text.FixedHeight;
