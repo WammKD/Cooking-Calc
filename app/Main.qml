@@ -126,7 +126,7 @@ MainView {
 
   property var current_table: vols;
 
-  property var fraction: Fraction["Fraction"];
+  property var fraction     : Fraction["Fraction"];
 
   function round(n) {
     return n.toFixed(2);
@@ -163,19 +163,23 @@ MainView {
       measurements2.text = "";
     }
 
-    var orig       = input.text;
-    var fin        = Number(parseFloat(orig));
-    var end        = "\u00A0\u00A0\u00A0\n";
-    values.text    = "";
-    fractions.text = "";
-    values2.text   = "";
+    var orig           = input.text;
+    var fin            = Number(parseFloat(orig));
+    var end            = "\u00A0\u00A0\u00A0\n";
+    values.text        = "";
+    whole_numbers.text = "";
+    fractions.text     = "";
+    values2.text       = "";
 
     for(var k in current_table) {
       var r = round(textAccumulation(k, fin, orig))
 
       values.text = values.text + r + end;
       if(current_table != temps) {
-	fractions.text = fractions.text + (new fraction(r)).toString() + end;
+	var num            = (new fraction(r)).toString().split(" ");
+	whole_numbers.text = whole_numbers.text + num[0] + end;
+	fractions.text     = fractions.text + (num[1] ? num[1] : "0/0") + end;
+	/* fractions.text = fractions.text + (new fraction(r)).toString() + end; */
       }
 
       if(init_page) {
@@ -281,6 +285,38 @@ MainView {
 	  onTextChanged   : convert(false);
 	}
 
+	Row {
+	  width: parent.width;
+
+	  Row {
+	    width: parent.width / 2;
+
+	    CheckBox {
+	      id       : check_decimals;
+	      checked  : true;
+	      onClicked: print(decimals.checked);
+	    }
+
+	    Label {
+	      text: i18n.tr("Decimals");
+	    }
+	  }
+
+	  Row {
+	    layoutDirection: Qt.RightToLeft;
+
+	    Label {
+	      text: i18n.tr("Fractions");
+	    }
+
+	    CheckBox {
+	      id       : check_fractions;
+	      checked  : true;
+	      onClicked: print(decimals.checked);
+	    }
+	  }
+	}
+
 	Label {
 	  text     : i18n.tr("\nVolume");
 	  color    : UbuntuColors.purple;
@@ -292,10 +328,11 @@ MainView {
 	  spacing: 0;
 
 	  Label {
-	    id            : values;
-	    text          : "Place";
-	    lineHeight    : units.gu(3);
-	    lineHeightMode: Text.FixedHeight;
+	    id                 : values;
+	    text               : "Place";
+	    lineHeight         : units.gu(3);
+	    lineHeightMode     : Text.FixedHeight;
+	    horizontalAlignment: Text.AlignRight;
 	  }
 
 	  Label {
@@ -307,10 +344,19 @@ MainView {
 	  }
 
 	  Label {
-	    id            : fractions;
-	    text          : "frac";
-	    lineHeight    : units.gu(3);
-	    lineHeightMode: Text.FixedHeight;
+	    id                 : whole_numbers;
+	    text               : "wholes";
+	    lineHeight         : units.gu(3);
+	    lineHeightMode     : Text.FixedHeight;
+	    horizontalAlignment: Text.AlignRight;
+	  }
+
+	  Label {
+	    id                 : fractions;
+	    text               : "frac";
+	    lineHeight         : units.gu(3);
+	    lineHeightMode     : Text.FixedHeight;
+	    horizontalAlignment: Text.AlignRight;
 	  }
 
 	  Label {
@@ -335,10 +381,11 @@ MainView {
 	  spacing: 0;
 
 	  Label {
-	    id            : values2;
-	    text          : "Place";
-	    lineHeight    : units.gu(3);
-	    lineHeightMode: Text.FixedHeight;
+	    id                 : values2;
+	    text               : "Place";
+	    lineHeight         : units.gu(3);
+	    lineHeightMode     : Text.FixedHeight;
+	    horizontalAlignment: Text.AlignRight;
 	  }
 
 	  Label {
