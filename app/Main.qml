@@ -61,7 +61,7 @@ MainView {
   property var vols:    { "Tablespoons (U. S.)"    : 1,
 			  "Teaspoons"              : 1 / 3,
 			  "Cups"                   : 16,
-			  "Fluid Ounces"           : 2,
+			  "Fluid Ounces (U. S.)"   : 2,
 			  "Pinches"                : 1 / 24,
 			  "Pints (liquid, U. S.)"  : 32,
 			  "Pints (dry, U. S.)"     : 74.473419913 / 2,
@@ -69,15 +69,15 @@ MainView {
 			  "Quarts (dry, U. S.)"    : 74.473419913,
 			  "Gallons (liquid, U. S.)": 256,
 			  "Gallons (dry, U. S.)"   : 74.473419913 * 4,
-			  "Liter"                  : 67.6280454,
+			  "Liters"                 : 67.6280454,
 			  "Drops"                  : 1 / 180,
 			  "Dashes"                 : 1 / 48,
 			  "Gill"                   : 8,
-			  "Firkin"                 : 2304,
+			  "Firkin"                 : 2271.2470704,
 			  "Hogshead"               : 16128,
-			  "Peck"                   : 74.473419913 * 8,
-			  "Bushel"                 : 74.473419913 * 32,
-			  "Cubic Inches"           : 59136 };
+			  "Pecks (U. S.)"          : 74.473419913 * 8,
+			  "Bushels (U. S.)"        : 74.473419913 * 32,
+			  "Cubic Inches (U. S.)"   : 1.108225108 };
   // All grams equal to 1 Tbs.
   property var foods:   { "Alcohol (ethyl)"               : 11.608497559168,
 			  "Alcohol (methyl)"              : 11.629938368101,
@@ -178,6 +178,7 @@ MainView {
 
   property string comma        : ",";
   property string period       : ".";
+  property string non_number   : "";
   property bool   format_num   : true;
   property string   vols_label : Object.keys(vols   ).join("\n");
   property string weight_label : Object.keys(weights).join("\n");
@@ -199,7 +200,7 @@ MainView {
   }
 
   function round(n) {
-    return (n === "" ? "" : n.toFixed(2));
+    return (n === non_number ? n : n.toFixed(2));
   }
 
   function formatNums(n) {
@@ -213,17 +214,20 @@ MainView {
   function textAccumulation(t, f, o) {
     var weight = weights[s_m.model[s_m.selectedIndex]];
 
-    return (!(f == o) ?  // This is horrid; clean up.
-	    "" : (weight ? f * weight / foods[s_p.model[s_p.selectedIndex]] /
-		           current_table[t] :
-			   (current_table == temps ?
-			    temps[s_m.model[s_m.selectedIndex]][t](f) :
-			    f * current_table[s_m.model[s_m.selectedIndex]] /
-			    current_table[t])));
+    return (!(f == o) ? non_number :
+	                (weight ? f * weight /
+			          foods[s_p.model[s_p.selectedIndex]] /
+				  current_table[t] :
+				  (current_table == temps ?
+				   temps[s_m.model[s_m.selectedIndex]][t](f) :
+				   f *
+				   current_table[s_m.model[s_m.selectedIndex]]
+				   / current_table[t])));
   }
   function textAccumulation2(t, f, o) {
-    return (!(f == o) ? "" : textAccumulation("Tablespoons (U. S.)", f, o) *
-                             foods[s_p.model[s_p.selectedIndex]] / weights[t]);
+    return (!(f == o) ? non_number :
+	                textAccumulation("Tablespoons (U. S.)", f, o) *
+                        foods[s_p.model[s_p.selectedIndex]] / weights[t]);
   }
 
   function cycleTable(label_decs, label_wholes, label_fracts, f, o, e, table) {
@@ -235,12 +239,12 @@ MainView {
 
 	var num       = (new fraction(r)).toString().split(" ");
 	var test      = num[0].indexOf("/") > -1;
-	label_wholes += (!(f == o) ?
-			 "" : (!test ? formatNums(num[0]) :
-			       "0"))                        + e;
-	label_fracts += (!(f == o) ?
-			 "" : ( test ? formatNums(num[0]) :
-				(num[1] ? num[1] : "0/0"))) + e;
+	label_wholes += (!(f == o) ? non_number :
+			             (!test ? formatNums(num[0]) :
+				              "0"))                       + e;
+	label_fracts += (!(f == o) ? non_number :
+			             ( test ? formatNums(num[0]) :
+					      (num[1] ? num[1] : "0/0"))) + e;
       }
 
       return [label_decs, label_wholes, label_fracts];
