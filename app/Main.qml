@@ -1,6 +1,5 @@
 import "fraction.js" as Fraction
 import QtQuick 2.4
-import QtSensors 5.0
 import Ubuntu.Components 1.3
 
 /*!
@@ -59,7 +58,7 @@ MainView {
 					                return k;
 					              } } };
   property var vols:    { "Tablespoons (U. S.)"    : 1,
-			  "Teaspoons"              : 1 / 3,
+			  "Teaspoons (U. S.)"      : 1 / 3,
 			  "Cups"                   : 16,
 			  "Fluid Ounces (U. S.)"   : 2,
 			  "Pinches"                : 1 / 24,
@@ -73,12 +72,17 @@ MainView {
 			  "Drops"                  : 1 / 180,
 			  "Dashes"                 : 1 / 48,
 			  "Gill"                   : 8,
-			  "Firkin (U. S.)"         : 2304/* 2271.2470704 */,  
-			  "Firkin (U. K., beer)"   : 2766.98977104,
+			  "Firkins (U. S.)"        : 2304/* 2271.2470704 */,  
+			  "Firkins (U. K., beer)"  : 2766.98977104,
 			  "Hogshead"               : 16128,
 			  "Pecks (U. S.)"          : 74.473419913 * 8,
 			  "Bushels (U. S.)"        : 74.473419913 * 32,
-			  "Cubic Inches (U. S.)"   : 1.108225108 };
+			  "Cubic Inches (U. S.)"   : 1.108225108,
+			  "Jiggers"                : 2.95735296875,
+			  "Tablespoons (U. K.)"    : 1.200397806,
+			  "Teaspoons (U. K.)"      : 0.400316807,
+			  "Tablespoons (metric)"   : 1.0144207,
+			  "Teaspoons (metric)"     : 0.33814023 };
   // All grams equal to 1 Tbs.
   property var foods:   { "Alcohol (ethyl)"               : 11.608497559168,
 			  "Alcohol (methyl)"              : 11.629938368101,
@@ -183,9 +187,9 @@ MainView {
   property string period       : ".";
   property string non_number   : "N/A";
   property bool   format_num   : true;
-  property string   vols_label : Object.keys(vols   ).join("\n");
-  property string weight_label : Object.keys(weights).join("\n");
-  property string  temps_label : Object.keys(temps  ).join("\n");
+  property string   vols_label : i18n.tr(Object.keys(vols   ).join("\n"));
+  property string weight_label : i18n.tr(Object.keys(weights).join("\n"));
+  property string  temps_label : i18n.tr(Object.keys(temps  ).join("\n"));
   property string values_decs  : "";
   property string values_wholes: "";
   property string values_fracts: "";
@@ -293,29 +297,32 @@ MainView {
                  actions: [Action {
 			     text       : i18n.tr("Products");
 			     onTriggered: {
-			       prods_temps_column.visible = true;
-			       s_p.visible                = true;
-			       weight_title.visible       = true;
-			       weight_row.visible         = true;
-			       current_table              = vols;
+			       subs_column.visible               = false;
+			       selectors_fields_switches.visible = true;
+			       s_p.visible                       = true;
+			       weight_title.visible              = true;
+			       weight_row.visible                = true;
+			       current_table                     = vols;
 			       convert(true);
 			     }
 			   },
 			   Action {
 			     text       : i18n.tr("Temperatures");
 			     onTriggered: {
-			       prods_temps_column.visible = true;
-			       s_p.visible                = false;
-			       weight_title.visible       = false;
-			       weight_row.visible         = false;
-			       current_table              = temps;
+			       subs_column.visible               = false;
+			       selectors_fields_switches.visible = true;
+			       s_p.visible                       = false;
+			       weight_title.visible              = false;
+			       weight_row.visible                = false;
+			       current_table                     = temps;
 			       convert(true);
 			     }
 			   },
 			   Action {
 			     text       : i18n.tr("Guides");
 			     onTriggered: {
-			       prods_temps_column.visible = false;
+ 			       selectors_fields_switches.visible = false;
+			       subs_column.visible               = true;
 			     }
 			   }]
 
@@ -337,57 +344,56 @@ MainView {
       }
 
       Column {
-	objectName: "products";
-	spacing   : units.gu(1);
-
-	OptionSelector {
-	  id                    : s_p;  // because it's long, otherwise
-	  objectName            : "selector_product";
-	  width                 : main_view.width - margs * 2;
-	  containerHeight       : itemHeight * 4;
-	  model                 : [];
-	  onSelectedIndexChanged: convert(false);
-        }
-
-        OptionSelector {
-	  id                    : s_m;  // because it's long, otherwise
-	  objectName            : "selector_measurement";
-	  width                 : main_view.width - margs * 2;
-	  containerHeight       : itemHeight * 4;
-	  model                 : [];
-	  onSelectedIndexChanged: convert(false);
-	}
-
-	TextField {
-	  id              : input;
-	  objectName      : "input";
-	  errorHighlight  : false;
-	  validator       : DoubleValidator {
-	                      notation: DoubleValidator.StandardNotation;
-	                    }
-	  height          : units.gu(5);
-	  width           : main_view.width - margs * 2;
-	  font.pixelSize  : FontUtils.sizeToPixels("medium");
-	  inputMethodHints: Qt.ImhFormattedNumbersOnly;
-	  text            : '0.0';
-	  onTextChanged   : convert(false);
-	}
-
-	Row {
-	  Switch {
-	    id       : view_fracts;
-	    checked  : false;
-	    onClicked: updateBasedOnSwitch();
-	  }
-
-	  Label {
-	    text: i18n.tr("    View Fractions");
-	  }
-	}
-
 	Column {
-	  id   : prods_temps_column;
-	  width: main_view.width - 2 * margs;
+	  id        : selectors_fields_switches;
+	  objectName: "selectors_fields_switches";
+	  width     : main_view.width - 2 * margs;
+	  spacing   : units.gu(1);
+
+	  OptionSelector {
+	    id                    : s_p;  // because it's long, otherwise
+	    objectName            : "selector_product";
+	    width                 : parent.width;
+	    containerHeight       : itemHeight * 4;
+	    model                 : [];
+	    onSelectedIndexChanged: convert(false);
+          }
+
+          OptionSelector {
+	    id                    : s_m;  // because it's long, otherwise
+	    objectName            : "selector_measurement";
+	    width                 : parent.width;
+	    containerHeight       : itemHeight * 4;
+	    model                 : [];
+	    onSelectedIndexChanged: convert(false);
+	  }
+
+	  TextField {
+	    id              : input;
+	    objectName      : "input";
+	    errorHighlight  : false;
+	    validator       : DoubleValidator {
+	                        notation: DoubleValidator.StandardNotation;
+	                      }
+	    height          : units.gu(5);
+	    width           : parent.width;
+	    font.pixelSize  : FontUtils.sizeToPixels("medium");
+	    inputMethodHints: Qt.ImhFormattedNumbersOnly;
+	    text            : '0.0';
+	    onTextChanged   : convert(false);
+	  }
+
+	  Row {
+	    Switch {
+	      id       : view_fracts;
+	      checked  : false;
+	      onClicked: updateBasedOnSwitch();
+	    }
+
+	    Label {
+	      text: i18n.tr("    View Fractions");
+	    }
+	  }
 
 	  Label {
 	    text                    : i18n.tr("\n\nVolume");
@@ -476,6 +482,16 @@ MainView {
 	      lineHeightMode: Text.FixedHeight;
 	    }
 	  }
+	}
+
+	Column {
+	  id        : subs_column;
+	  objectName: "subs_column";
+	  visible   : false;
+	  width     : main_view.width - 2 * margs;
+	  spacing   : units.gu(1);
+
+	  
 	}
       }
     }
