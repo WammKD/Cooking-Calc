@@ -114,7 +114,55 @@ MainView {
 			  "Honey"                         : 21.25,
 			  "Jam"                           : 20.3125,
 			  "Ketchup (Catsup)"              : 17.000000036,
-			  "Lard"                          : 12.8125 };
+			  "Lard"                          : 12.8125,
+			  "Lentil (boiled)"               : 12.375000026,
+			  "Lentil (dry/pink or red, raw)" : 12.000000025,
+			  "Lentil (sprouted, raw)"        : 4.81250001,
+			  "Flaxseed (Linseed, ground)"    : 6.6,
+			  "Flaxseed (Linseed, whole)"     : 14.02,
+			  "Margarine"                     : 13.5625,
+			  "Mayonnaise"                    : 15,
+			  "Milk"                          : 15,
+			  "Milk (granulated)"             : 4.2,
+			  "Milk (powdered)"               : 8.25,
+			  "Oatmeal (old fashioned/rolled)": 5.625,
+			  "Oatmeal (steel cut)"           : 9.75,
+			  "Oatmeal (steel cut)"           : 9.75,
+			  "Oil (cottonseed)"              : 13.6,
+			  "Oil (flaxseed)"                : 13.6,
+			  "Oil (olive)"                   : 13.5,
+			  "Oil (peanut)"                  : 13.5,
+			  "Oil (sesame)"                  : 13.6,
+			  "Oil (soybean)"                 : 13.6,
+			  "Oil (vegetable: avocado)"      : 13.958705953,
+			  "Oil (vegetable: canola)"       : 13.958705953,
+			  "Oil (vegetable: most)"         : 13.6,
+			  "Oil (vegetable: mustard)"      : 13.958705953,
+			  "Oil (vegetable: sunflower)"    : 13.958705953,
+			  "Oil (wheat germ)"              : 13.6,
+			  "Paprika (ground)"              : 6.800000014,
+			  "Peas (green, frozen)"          : 8.375000018,
+			  "Pepper (black, ground)"        : 6.900000015,
+			  "Poppy Seeds"                   : 8.795167692,
+			  "Pumpkin Seeds"                 : 8.625,
+			  "Raisin"                        : 9.06
+			  "Rice (brown)"                  : 12.05,
+			  "Rice (white)"                  : 11.73,
+			  "Salt"                          : 17.0625,
+			  "Semolina"                      : 10.4375,
+			  "Sesame Seeds"                  : 8.000000017,
+			  "Sugar (granulated)"            : 12.5,
+			  "Sugar (icing)"                 : 7.8125,
+			  "Sunflower Seeds (dry roasted)" : 8.000000017,
+			  "Sunflower Seeds (toasted)"     : 8.375000018,
+			  "Vanilla Extract"               : 13.000000028,
+			  "Vanilla Sugar"                 : 12.685714286,
+			  "Vinegar (balsamic)"            : 15.937500034,
+			  "Vinegar (cider)"               : 14.937500032,
+			  "Vinegar (distilled)"           : 14.875000032,
+			  "Vinegar (red wine)"            : 14.937500032,
+			  "Walnuts (chopped)"             : 7.3125,
+			  "Water"                         : 14.7867648 };
   property var weights: { "Grams"             : 1,
 			  "Ounces"            : 28.349523124662777,
 			  "Pounds"            : 453.5923700100354,
@@ -142,7 +190,6 @@ MainView {
 
   function round(n) {
     return (n === "" ? "" : n.toFixed(2));
-  /* Math.round((n + 0.00001) * 100) / 100; */
   }
 
   function textAccumulation(t, f, o) {
@@ -184,12 +231,14 @@ MainView {
 
   function convert(init_page) {
     if(init_page) {
-      s_m.model   = Object.keys(current_table);
+      // Fills in the appropriate model for the OptionSelectors
+      s_m.model         = Object.keys(current_table);
       if(current_table == vols) {
-	s_m.model = s_m.model.concat(Object.keys(weights)).sort();
+	s_m.model       = s_m.model.concat(Object.keys(weights)).sort();
       }
 
-      s_p.model   = Object.keys(foods);
+      s_p.model         = Object.keys(foods);
+      measurements.text = (current_table == vols ? vols_label : temps_label);
     }
 
     var orig       = input.text;
@@ -206,10 +255,6 @@ MainView {
     weight_decs   = temp_array[0];
     weight_wholes = temp_array[1];
     weight_fracts = temp_array[2];
-
-    if(init_page) {
-      measurements.text = (current_table == vols ? vols_label : temps_label);
-    }
 
     whole_numbers.text = (view_fracts.checked ? values_wholes : "");
     fract_dec.text     = (view_fracts.checked ? values_fracts : values_decs);
@@ -320,89 +365,108 @@ MainView {
 	  }
 	}
 
-	Label {
-	  text     : i18n.tr("\n\nVolume");
-	  color    : UbuntuColors.purple;
-	  font.bold: true;
-	  fontSize : "Large";
-	  anchors.horizontalCenter: parent.horizontalCenter;
-	}
-
-	Row {
-	  id     : values_row;
-	  spacing: 0;
-
-	  Row {
-	    width          : (main_view.width - 2 * margs) / 2;
-	    layoutDirection: Qt.RightToLeft;
-
-	    Label {
-	      id                 : fract_dec;
-	      text               : "frac";
-	      lineHeight         : units.gu(3);
-	      lineHeightMode     : Text.FixedHeight;
-	      horizontalAlignment: Text.AlignRight;
-	    }
-
-	    Label {
-	      id                 : whole_numbers;
-	      text               : "wholes";
-	      lineHeight         : units.gu(3);
-	      lineHeightMode     : Text.FixedHeight;
-	      horizontalAlignment: Text.AlignRight;
-	    }
-	  }
+	Column {
+	  id   : vols_temps_column;
+	  width: (main_view.width - 2 * margs);
 
 	  Label {
-	    id            : measurements;
-	    width         : (main_view.width - 2 * margs) / 2;
-	    text          : vols_label;
-	    font.bold     : true;
-	    lineHeight    : units.gu(3);
-	    lineHeightMode: Text.FixedHeight;
+	    text                    : i18n.tr("\n\nVolume");
+	    color                   : UbuntuColors.purple;
+	    font.bold               : true;
+	    fontSize                : "Large";
+	    anchors.horizontalCenter: parent.horizontalCenter;
 	  }
-	}
-
-	Label {
-	  id       : weight_title;
-	  text     : i18n.tr("Weight");
-	  color    : UbuntuColors.purple;
-	  font.bold: true;
-	  fontSize : "Large";
-	  anchors.horizontalCenter: parent.horizontalCenter;
-	}
-
-	Row {
-	  id     : weight_row;
-	  spacing: 0;
 
 	  Row {
-	    width          : (main_view.width - 2 * margs) / 2;
-	    layoutDirection: Qt.RightToLeft;
+	    id     : values_row;
+	    width  : parent.width;
+	    spacing: 0;
 
-	    Label {
-	      id                 : weight_f_d;
-	      text               : "frac";
-	      lineHeight         : units.gu(3);
-	      lineHeightMode     : Text.FixedHeight;
-	      horizontalAlignment: Text.AlignRight;
+	    Row {
+	      width          : parent.width / 2;
+	      layoutDirection: Qt.RightToLeft;
+
+	      Label {
+		id                 : fract_dec;
+		text               : "frac";
+		lineHeight         : units.gu(3);
+		lineHeightMode     : Text.FixedHeight;
+		horizontalAlignment: Text.AlignRight;
+	      }
+
+	      Label {
+		id                 : whole_numbers;
+		text               : "wholes";
+		lineHeight         : units.gu(3);
+		lineHeightMode     : Text.FixedHeight;
+		horizontalAlignment: Text.AlignRight;
+	      }
 	    }
 
-	    Label {
-	      id                 : weight_w_nums;
-	      text               : "Place";
-	      lineHeight         : units.gu(3);
-	      lineHeightMode     : Text.FixedHeight;
-	      horizontalAlignment: Text.AlignRight;
+	    Column {
+	      width: parent.width / 2;
+
+	      Label {
+		id            : measurements;
+		text          : vols_label;
+		font.bold     : true;
+		lineHeight    : units.gu(3);
+		lineHeightMode: Text.FixedHeight;
+	      }
 	    }
 	  }
+	}
+
+	Column {
+	  id   : weight_column;
+	  width: (main_view.width - 2 * margs);
 
 	  Label {
-	    text          : weight_label;
-	    width         : (main_view.width - 2 * margs) / 2;
-	    font.bold     : true;
-	    lineHeight    : units.gu(3);
-	    lineHeightMode: Text.FixedHeight;
+	    id       : weight_title;
+	    text     : i18n.tr("Weight");
+	    color    : UbuntuColors.purple;
+	    font.bold: true;
+	    fontSize : "Large";
+	    anchors.horizontalCenter: parent.horizontalCenter;
+	  }
+
+	  Row {
+	    id     : weight_row;
+	    width  : parent.width;
+	    spacing: 0;
+
+	    Row {
+	      width          : parent.width / 2;
+	      layoutDirection: Qt.RightToLeft;
+
+	      Label {
+		id                 : weight_f_d;
+		text               : "frac";
+		lineHeight         : units.gu(3);
+		lineHeightMode     : Text.FixedHeight;
+		horizontalAlignment: Text.AlignRight;
+	      }
+
+	      Label {
+		id                 : weight_w_nums;
+		text               : "Place";
+		lineHeight         : units.gu(3);
+		lineHeightMode     : Text.FixedHeight;
+		horizontalAlignment: Text.AlignRight;
+	      }
+	    }
+
+	    Column {
+	      width: parent.width / 2;
+
+	      Label {
+		id            : weight_meas;
+		text          : weight_label;
+		font.bold     : true;
+		lineHeight    : units.gu(3);
+		lineHeightMode: Text.FixedHeight;
+	      }
+	    }
 	  }
 	}
       }

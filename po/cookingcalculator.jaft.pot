@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-16 19:13+0000\n"
+"POT-Creation-Date: 2016-04-17 02:05+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,34 +17,34 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../app/Main.qml:224
+#: ../app/Main.qml:266
 msgid "Cooking Calculator"
 msgstr ""
 
-#: ../app/Main.qml:228
+#: ../app/Main.qml:270
 msgid "Products"
 msgstr ""
 
-#: ../app/Main.qml:238
+#: ../app/Main.qml:280
 msgid "Temperatures"
 msgstr ""
 
-#: ../app/Main.qml:248
+#: ../app/Main.qml:290
 msgid "Guides"
 msgstr ""
 
-#: ../app/Main.qml:322
+#: ../app/Main.qml:364
 msgid "    View Fractions"
 msgstr ""
 
-#: ../app/Main.qml:327
+#: ../app/Main.qml:373
 msgid ""
 "\n"
 "\n"
 "Volume"
 msgstr ""
 
-#: ../app/Main.qml:371
+#: ../app/Main.qml:426
 msgid "Weight"
 msgstr ""
 
