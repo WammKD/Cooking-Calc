@@ -73,7 +73,8 @@ MainView {
 			  "Drops"                  : 1 / 180,
 			  "Dashes"                 : 1 / 48,
 			  "Gill"                   : 8,
-			  "Firkin"                 : 2271.2470704,
+			  "Firkin (U. S.)"         : 2304/* 2271.2470704 */,  
+			  "Firkin (U. K., beer)"   : 2766.98977104,
 			  "Hogshead"               : 16128,
 			  "Pecks (U. S.)"          : 74.473419913 * 8,
 			  "Bushels (U. S.)"        : 74.473419913 * 32,
@@ -163,22 +164,24 @@ MainView {
 			  "Vinegar (red wine)"            : 14.937500032,
 			  "Walnuts (chopped)"             : 7.3125,
 			  "Water"                         : 14.7867648 };
-  property var weights: { "Grams"             : 1,
-			  "Ounces"            : 28.349523124662777,
-			  "Pounds"            : 453.5923700100354,
-			  "Kilogram"          : 1000,
-			  "Milligrams"        : 0.001,
-			  "Tonnes"            : 1000000,
-			  "Short Tons (U. S.)": 907184.9958859162,
-			  "Long Tons (U. K.)" : 1016046.9373043159,
-			  "Stones"            : 6350.294971201412,
-			  "Micrograms"        : 1e-06 };
+  property var weights: { "Grams"                        : 1,
+			  "Ounces"                       : 28.349523124662777,
+			  "Pounds"                       : 453.5923700100354,
+			  "Kilogram"                     : 1000,
+			  "Milligrams"                   : 0.001,
+			  "Tonnes"                       : 1000000,
+			  "Short Tons (U. S.)"           : 907184.9958859162,
+			  "Long Tons (U. K.)"            : 1016046.9373043159,
+			  "Stones"                       : 6350.294971201412,
+			  "Micrograms"                   : 1e-06,
+			  "Firkin (U. K., butter/cheese)": 25401.1727200000023,
+			};
 
   property var current_table   : vols;
 
   property string comma        : ",";
   property string period       : ".";
-  property string non_number   : "";
+  property string non_number   : "N/A";
   property bool   format_num   : true;
   property string   vols_label : Object.keys(vols   ).join("\n");
   property string weight_label : Object.keys(weights).join("\n");
@@ -290,26 +293,29 @@ MainView {
                  actions: [Action {
 			     text       : i18n.tr("Products");
 			     onTriggered: {
-			       s_p.visible = true;
-			       weight_title.visible = true;
-			       weight_row.visible = true;
-			       current_table = vols;
+			       prods_temps_column.visible = true;
+			       s_p.visible                = true;
+			       weight_title.visible       = true;
+			       weight_row.visible         = true;
+			       current_table              = vols;
 			       convert(true);
 			     }
 			   },
 			   Action {
 			     text       : i18n.tr("Temperatures");
 			     onTriggered: {
-			       s_p.visible = false;
-			       weight_title.visible = false;
-			       weight_row.visible = false;
-			       current_table = temps;
+			       prods_temps_column.visible = true;
+			       s_p.visible                = false;
+			       weight_title.visible       = false;
+			       weight_row.visible         = false;
+			       current_table              = temps;
 			       convert(true);
 			     }
 			   },
 			   Action {
 			     text       : i18n.tr("Guides");
 			     onTriggered: {
+			       prods_temps_column.visible = false;
 			     }
 			   }]
 
@@ -380,6 +386,7 @@ MainView {
 	}
 
 	Column {
+	  id   : prods_temps_column;
 	  width: main_view.width - 2 * margs;
 
 	  Label {
