@@ -145,7 +145,7 @@ MainView {
 			  "Pepper (black, ground)"        : 6.900000015,
 			  "Poppy Seeds"                   : 8.795167692,
 			  "Pumpkin Seeds"                 : 8.625,
-			  "Raisin"                        : 9.06
+			  "Raisin"                        : 9.06,
 			  "Rice (brown)"                  : 12.05,
 			  "Rice (white)"                  : 11.73,
 			  "Salt"                          : 17.0625,
@@ -176,6 +176,9 @@ MainView {
 
   property var current_table   : vols;
 
+  property string comma        : ",";
+  property string period       : ".";
+  property bool   format_num   : true;
   property string   vols_label : Object.keys(vols   ).join("\n");
   property string weight_label : Object.keys(weights).join("\n");
   property string  temps_label : Object.keys(temps  ).join("\n");
@@ -188,8 +191,23 @@ MainView {
 
   property var fraction        : Fraction["Fraction"];
 
+  function updateBasedOnSwitch() {
+    whole_numbers.text = (view_fracts.checked ? values_wholes : "");
+    fract_dec.text     = (view_fracts.checked ? values_fracts : values_decs);
+    weight_w_nums.text = (view_fracts.checked ? weight_wholes : "");
+    weight_f_d.text    = (view_fracts.checked ? weight_fracts : weight_decs);
+  }
+
   function round(n) {
     return (n === "" ? "" : n.toFixed(2));
+  }
+
+  function formatNums(n) {
+    if(format_num) {
+      return n.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1" + comma);
+    } else {
+      return n;
+    }
   }
 
   function textAccumulation(t, f, o) {
@@ -213,14 +231,16 @@ MainView {
       for(var item in table) {
 	var r       = round((table == weights ? textAccumulation2 :
 			                        textAccumulation)(item, f, o));
-	label_decs += r + e;
+	label_decs += formatNums(r) + e;
 
 	var num       = (new fraction(r)).toString().split(" ");
 	var test      = num[0].indexOf("/") > -1;
-	label_wholes += (!(f == o) ? "" :
-			 (!test ? num[0] : "0"))                       + e;
-	label_fracts += (!(f == o) ? "" :
-			 ( test ? num[0] : (num[1] ? num[1] : "0/0"))) + e;
+	label_wholes += (!(f == o) ?
+			 "" : (!test ? formatNums(num[0]) :
+			       "0"))                        + e;
+	label_fracts += (!(f == o) ?
+			 "" : ( test ? formatNums(num[0]) :
+				(num[1] ? num[1] : "0/0"))) + e;
       }
 
       return [label_decs, label_wholes, label_fracts];
@@ -256,10 +276,7 @@ MainView {
     weight_wholes = temp_array[1];
     weight_fracts = temp_array[2];
 
-    whole_numbers.text = (view_fracts.checked ? values_wholes : "");
-    fract_dec.text     = (view_fracts.checked ? values_fracts : values_decs);
-    weight_w_nums.text = (view_fracts.checked ? weight_wholes : "");
-    weight_f_d.text    = (view_fracts.checked ? weight_fracts : weight_decs);
+    updateBasedOnSwitch();
   }
 
   PageHeader {
@@ -350,14 +367,7 @@ MainView {
 	  Switch {
 	    id       : view_fracts;
 	    checked  : false;
-	    onClicked: {
-	      whole_numbers.text = (view_fracts.checked ? values_wholes : "");
-	      fract_dec.text     = (view_fracts.checked ? values_fracts :
-				                          values_decs);
-	      weight_w_nums.text = (view_fracts.checked ? weight_wholes : "");
-	      weight_f_d.text    = (view_fracts.checked ? weight_fracts :
-				                          weight_decs);
-	    }
+	    onClicked: updateBasedOnSwitch();
 	  }
 
 	  Label {
@@ -366,8 +376,7 @@ MainView {
 	}
 
 	Column {
-	  id   : vols_temps_column;
-	  width: (main_view.width - 2 * margs);
+	  width: main_view.width - 2 * margs;
 
 	  Label {
 	    text                    : i18n.tr("\n\nVolume");
@@ -378,7 +387,6 @@ MainView {
 	  }
 
 	  Row {
-	    id     : values_row;
 	    width  : parent.width;
 	    spacing: 0;
 
@@ -403,30 +411,22 @@ MainView {
 	      }
 	    }
 
-	    Column {
-	      width: parent.width / 2;
-
-	      Label {
-		id            : measurements;
-		text          : vols_label;
-		font.bold     : true;
-		lineHeight    : units.gu(3);
-		lineHeightMode: Text.FixedHeight;
-	      }
+	    Label {
+	      id            : measurements;
+	      text          : vols_label;
+	      width         : parent.width / 2;
+	      font.bold     : true;
+	      lineHeight    : units.gu(3);
+	      lineHeightMode: Text.FixedHeight;
 	    }
 	  }
-	}
-
-	Column {
-	  id   : weight_column;
-	  width: (main_view.width - 2 * margs);
 
 	  Label {
-	    id       : weight_title;
-	    text     : i18n.tr("Weight");
-	    color    : UbuntuColors.purple;
-	    font.bold: true;
-	    fontSize : "Large";
+	    id                      : weight_title;
+	    text                    : i18n.tr("Weight");
+	    color                   : UbuntuColors.purple;
+	    font.bold               : true;
+	    fontSize                : "Large";
 	    anchors.horizontalCenter: parent.horizontalCenter;
 	  }
 
@@ -456,16 +456,13 @@ MainView {
 	      }
 	    }
 
-	    Column {
-	      width: parent.width / 2;
-
-	      Label {
-		id            : weight_meas;
-		text          : weight_label;
-		font.bold     : true;
-		lineHeight    : units.gu(3);
-		lineHeightMode: Text.FixedHeight;
-	      }
+	    Label {
+	      id            : weight_meas;
+	      text          : weight_label;
+	      width         : parent.width / 2;
+	      font.bold     : true;
+	      lineHeight    : units.gu(3);
+	      lineHeightMode: Text.FixedHeight;
 	    }
 	  }
 	}
