@@ -291,10 +291,11 @@ MainView {
   }
 
   PageHeader {
+    id       : main_header;
     title    : i18n.tr("Cooking Calculator");
     extension: Sections {
                  id     : sects;
-                 actions: [Action {
+		 actions: [Action {
 			     text       : i18n.tr("Products");
 			     onTriggered: {
 			       subs_column.visible               = false;
@@ -332,6 +333,17 @@ MainView {
 		   bottom    : parent.bottom;
 		 }
                }
+
+    trailingActionBar {
+      actions: [Action {
+		  iconName   : "settings";
+		  text       : "Settings";
+		  onTriggered: {
+		    main_header.visible     = false;
+		    settings_header.visible = true;
+		  }
+		}]
+    }
 
     ScrollView {
       height: main_view.height - (parent.height + sects.height);
@@ -495,5 +507,19 @@ MainView {
 	}
       }
     }
+  }
+
+  PageHeader {
+    id                      : settings_header;
+    title                   : i18n.tr("Settings");
+    visible                 : false;
+    leadingActionBar.actions: [Action {
+				 iconName   : "back";
+				 text       : "Back";
+				 onTriggered: {
+				   settings_header.visible = false;
+				   main_header.visible     = true;
+				 }
+			       }]
   }
 }
