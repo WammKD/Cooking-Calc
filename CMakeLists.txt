@@ -33,7 +33,7 @@ set(QT_IMPORTS_DIR "lib/${ARCH_TRIPLET}")
 
 option(INSTALL_TESTS "Install the tests on make install" on)
 
-set(APP_NAME          CookingCalculator)
+set(APP_NAME          "CookingCalculator")
 set(APP_ID            "cookingcalculator.jaft")
 set(COOKINGCALCULATOR_DIR "share/qml/CookingCalculator")
 set(MAIN_QML          "Main.qml")

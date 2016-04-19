@@ -1,5 +1,6 @@
 import "fraction.js" as Fraction
 import QtQuick 2.4
+import QtQuick.LocalStorage 2.0
 import Ubuntu.Components 1.3
 
 /*!
@@ -183,8 +184,57 @@ MainView {
 
   property var current_table   : vols;
 
-  property string comma        : ",";
-  property string period       : ".";
+  function openDB() {
+    // var dB = LocalStorage.openDatabaseSync(identifier,
+					   // version,
+					   // description,
+					   // estimated_size,
+					   // callback(db));
+    var dB = LocalStorage.openDatabaseSync("cookingcalculator",
+					   "0.1",
+					   "Mass and weight converter.",
+					   100000);
+
+    try {
+      dB.transaction(function(tx) {
+		       tx.executeSql('CREATE TABLE IF NOT EXISTS ' +
+				     'settings(comma TEXT, period TEXT);');
+
+		       var table = tx.executeSql("SELECT * " +
+						 "FROM settings;");
+
+		       if(table.rows.length == 0) {
+			 tx.executeSql('INSERT INTO settings VALUES(?, ?);',
+				       [",", "."]);
+			 print('Settings table seeded');
+		       }
+		       print('Settings table initialized.');
+		     });
+      return dB;
+    } catch(err) {
+      print("Error creating table in database: " + err);
+    }
+  }
+
+  function getDbValue(col) {
+    var r = null;
+
+    try {
+      db.transaction(function(tx) {
+		       r = tx.executeSql("SELECT * " +
+					 "FROM settings;").rows.item(0)[col];
+		     });
+    } catch(err) {
+      print("Error retrieving value from database: " + err);
+    }
+
+    print(r);
+    return r;
+  }
+
+  property var    db           : openDB();
+  property string comma        : getDbValue("comma");
+  property string period       : getDbValue("period");
   property string non_number   : "N/A";
   property bool   format_num   : true;
   property string   vols_label : i18n.tr(Object.keys(vols   ).join("\n"));
