@@ -199,14 +199,16 @@ MainView {
     try {
       dB.transaction(function(tx) {
 		       tx.executeSql('CREATE TABLE IF NOT EXISTS ' +
-				     'settings(comma TEXT, period TEXT);');
+				     'settings(comma  TEXT    NOT NULL, ' +
+				              'period TEXT    NOT NULL, ' +
+				              'fracts BOOLEAN NOT NULL);');
 
 		       var table = tx.executeSql("SELECT * " +
 						 "FROM settings;");
 
 		       if(table.rows.length == 0) {
-			 tx.executeSql('INSERT INTO settings VALUES(?, ?);',
-				       [",", "."]);
+			 tx.executeSql('INSERT INTO settings VALUES(?, ?, ?);',
+				       [",", ".", 0]);
 			 print('Settings table seeded');
 		       }
 		       print('Settings table initialized.');
@@ -263,6 +265,7 @@ MainView {
   property var fraction        : Fraction["Fraction"];
 
   function updateBasedOnSwitch() {
+    updateDbValue("fracts", (view_fracts.checked ? 1 : 0));
     whole_numbers.text = (view_fracts.checked ? values_wholes : "");
     fract_dec.text     = (view_fracts.checked ? values_fracts : values_decs);
     weight_w_nums.text = (view_fracts.checked ? weight_wholes : "");
@@ -406,11 +409,69 @@ MainView {
 		    main_header.visible     = false;
 		    settings_header.visible = true;
 		  }
+		},
+		Action {
+		  iconName   : "info";
+		  text       : "About";
+		  onTriggered: PopupUtils.open(info_dialog);
 		}]
     }
 
-    ScrollView {
-      height: main_view.height - (parent.height + sects.height);
+    Component {
+      id: info_dialog;
+
+      Popover {
+        id: info_dialogue;
+
+	TextField {
+	  id            : info_text;
+	  errorHighlight: false;
+	  text          : comma;
+
+	  anchors {
+	    top   : parent.top;
+	    bottom: info_cancel.top;
+	    left  : parent.left;
+	    right : parent.right;
+	  }
+	}
+
+        Button {
+	  id       : info_cancel;
+          text     : "Cancel";
+          onClicked: PopupUtils.close(info_dialogue);
+
+	  anchors {
+	    top   : info_text.bottom;
+	    bottom: info_save.top;
+	    left  : parent.left;
+	    right : parent.right;
+	  }
+        }
+
+        Button {
+	  id       : info_save;
+          text     : "Save";
+          color    : UbuntuColors.green;
+          onClicked: {
+	    PopupUtils.close(info_dialogue);
+	  }
+
+	  anchors {
+	    top   : info_cancel.bottom;
+	    bottom: parent.bottom;
+	    left  : parent.left;
+	    right : parent.right;
+	  }
+        }
+      }
+    }
+
+    Column {
+      id        : selectors_fields_switches;
+      objectName: "selectors_fields_switches";
+      width     : main_view.width - 2 * margs;
+      spacing   : units.gu(1);
 
       anchors {
         margins: margs;
@@ -419,155 +480,162 @@ MainView {
 	right  : parent.right;
       }
 
-      Column {
-	Column {
-	  id        : selectors_fields_switches;
-	  objectName: "selectors_fields_switches";
-	  width     : main_view.width - 2 * margs;
-	  spacing   : units.gu(1);
+      OptionSelector {
+	id                    : s_p;  // because it's long, otherwise
+	objectName            : "selector_product";
+	width                 : parent.width;
+	containerHeight       : itemHeight * 4;
+	model                 : [];
+	onSelectedIndexChanged: convert(false);
+      }
 
-	  OptionSelector {
-	    id                    : s_p;  // because it's long, otherwise
-	    objectName            : "selector_product";
-	    width                 : parent.width;
-	    containerHeight       : itemHeight * 4;
-	    model                 : [];
-	    onSelectedIndexChanged: convert(false);
-          }
+      OptionSelector {
+	id                    : s_m;  // because it's long, otherwise
+	objectName            : "selector_measurement";
+	width                 : parent.width;
+	containerHeight       : itemHeight * 4;
+	model                 : [];
+	onSelectedIndexChanged: convert(false);
+      }
 
-          OptionSelector {
-	    id                    : s_m;  // because it's long, otherwise
-	    objectName            : "selector_measurement";
-	    width                 : parent.width;
-	    containerHeight       : itemHeight * 4;
-	    model                 : [];
-	    onSelectedIndexChanged: convert(false);
-	  }
+      TextField {
+	id              : input;
+	objectName      : "input";
+	errorHighlight  : false;
+	validator       : DoubleValidator {
+	                    notation: DoubleValidator.StandardNotation;
+	                  }
+	height          : units.gu(5);
+	width           : parent.width;
+	font.pixelSize  : FontUtils.sizeToPixels("medium");
+	inputMethodHints: Qt.ImhFormattedNumbersOnly;
+	text            : '0.0';
+	onTextChanged   : convert(false);
+      }
 
-	  TextField {
-	    id              : input;
-	    objectName      : "input";
-	    errorHighlight  : false;
-	    validator       : DoubleValidator {
-	                        notation: DoubleValidator.StandardNotation;
-	                      }
-	    height          : units.gu(5);
-	    width           : parent.width;
-	    font.pixelSize  : FontUtils.sizeToPixels("medium");
-	    inputMethodHints: Qt.ImhFormattedNumbersOnly;
-	    text            : '0' + period + '0';
-	    onTextChanged   : convert(false);
-	  }
+      Row {
+	id: switch_row;
 
-	  Row {
-	    Switch {
-	      id       : view_fracts;
-	      checked  : false;
-	      onClicked: updateBasedOnSwitch();
-	    }
-
-	    Label {
-	      text: i18n.tr("    View Fractions");
-	    }
-	  }
-
-	  Label {
-	    text                    : i18n.tr("\n\nVolume");
-	    color                   : UbuntuColors.purple;
-	    font.bold               : true;
-	    fontSize                : "Large";
-	    anchors.horizontalCenter: parent.horizontalCenter;
-	  }
-
-	  Row {
-	    width  : parent.width;
-	    spacing: 0;
-
-	    Row {
-	      width          : parent.width / 2;
-	      layoutDirection: Qt.RightToLeft;
-
-	      Label {
-		id                 : fract_dec;
-		text               : "frac";
-		lineHeight         : units.gu(3);
-		lineHeightMode     : Text.FixedHeight;
-		horizontalAlignment: Text.AlignRight;
-	      }
-
-	      Label {
-		id                 : whole_numbers;
-		text               : "wholes";
-		lineHeight         : units.gu(3);
-		lineHeightMode     : Text.FixedHeight;
-		horizontalAlignment: Text.AlignRight;
-	      }
-	    }
-
-	    Label {
-	      id            : measurements;
-	      text          : vols_label;
-	      width         : parent.width / 2;
-	      font.bold     : true;
-	      lineHeight    : units.gu(3);
-	      lineHeightMode: Text.FixedHeight;
-	    }
-	  }
-
-	  Label {
-	    id                      : weight_title;
-	    text                    : i18n.tr("Weight");
-	    color                   : UbuntuColors.purple;
-	    font.bold               : true;
-	    fontSize                : "Large";
-	    anchors.horizontalCenter: parent.horizontalCenter;
-	  }
-
-	  Row {
-	    id     : weight_row;
-	    width  : parent.width;
-	    spacing: 0;
-
-	    Row {
-	      width          : parent.width / 2;
-	      layoutDirection: Qt.RightToLeft;
-
-	      Label {
-		id                 : weight_f_d;
-		text               : "frac";
-		lineHeight         : units.gu(3);
-		lineHeightMode     : Text.FixedHeight;
-		horizontalAlignment: Text.AlignRight;
-	      }
-
-	      Label {
-		id                 : weight_w_nums;
-		text               : "Place";
-		lineHeight         : units.gu(3);
-		lineHeightMode     : Text.FixedHeight;
-		horizontalAlignment: Text.AlignRight;
-	      }
-	    }
-
-	    Label {
-	      id            : weight_meas;
-	      text          : weight_label;
-	      width         : parent.width / 2;
-	      font.bold     : true;
-	      lineHeight    : units.gu(3);
-	      lineHeightMode: Text.FixedHeight;
-	    }
-	  }
+	Switch {
+	  id       : view_fracts;
+	  checked  : (getDbValue("fracts") == 1 ? true : false);
+	  onClicked: updateBasedOnSwitch();
 	}
 
-	Column {
-	  id        : subs_column;
-	  objectName: "subs_column";
-	  visible   : false;
-	  width     : main_view.width - 2 * margs;
-	  spacing   : units.gu(1);
+	Label {
+	  text: i18n.tr("    View Fractions");
+	}
+      }
 
-	  
+      ScrollView {
+	height: main_view.height - (main_header.height + sects.height +
+				    s_p.height + s_m.height + input.height +
+				    switch_row.height);
+	width : parent.width;
+
+	Column {
+	  Column {
+	    width  : main_view.width - 2 * margs;
+	    spacing: units.gu(1);
+
+	    Label {
+	      text                    : i18n.tr("\n\nVolume");
+	      color                   : UbuntuColors.purple;
+	      font.bold               : true;
+	      fontSize                : "Large";
+	      anchors.horizontalCenter: parent.horizontalCenter;
+	    }
+
+	    Row {
+	      width  : parent.width;
+	      spacing: 0;
+
+	      Row {
+		width          : parent.width / 2;
+		layoutDirection: Qt.RightToLeft;
+
+		Label {
+		  id                 : fract_dec;
+		  text               : "frac";
+		  lineHeight         : units.gu(3);
+		  lineHeightMode     : Text.FixedHeight;
+		  horizontalAlignment: Text.AlignRight;
+		}
+
+		Label {
+		  id                 : whole_numbers;
+		  text               : "wholes";
+		  lineHeight         : units.gu(3);
+		  lineHeightMode     : Text.FixedHeight;
+		  horizontalAlignment: Text.AlignRight;
+		}
+	      }
+
+	      Label {
+		id            : measurements;
+		text          : vols_label;
+		width         : parent.width / 2;
+		font.bold     : true;
+		lineHeight    : units.gu(3);
+		lineHeightMode: Text.FixedHeight;
+	      }
+	    }
+
+	    Label {
+	      id                      : weight_title;
+	      text                    : i18n.tr("Weight");
+	      color                   : UbuntuColors.purple;
+	      font.bold               : true;
+	      fontSize                : "Large";
+	      anchors.horizontalCenter: parent.horizontalCenter;
+	    }
+
+	    Row {
+	      id     : weight_row;
+	      width  : parent.width;
+	      spacing: 0;
+
+	      Row {
+		width          : parent.width / 2;
+		layoutDirection: Qt.RightToLeft;
+
+		Label {
+		  id                 : weight_f_d;
+		  text               : "frac";
+		  lineHeight         : units.gu(3);
+		  lineHeightMode     : Text.FixedHeight;
+		  horizontalAlignment: Text.AlignRight;
+		}
+
+		Label {
+		  id                 : weight_w_nums;
+		  text               : "Place";
+		  lineHeight         : units.gu(3);
+		  lineHeightMode     : Text.FixedHeight;
+		  horizontalAlignment: Text.AlignRight;
+		}
+	      }
+
+	      Label {
+		id            : weight_meas;
+		text          : weight_label;
+		width         : parent.width / 2;
+		font.bold     : true;
+		lineHeight    : units.gu(3);
+		lineHeightMode: Text.FixedHeight;
+	      }
+	    }
+	  }
+
+	  Column {
+	    id        : subs_column;
+	    objectName: "subs_column";
+	    visible   : false;
+	    width     : main_view.width - 2 * margs;
+	    spacing   : units.gu(1);
+
+	    
+	  }
 	}
       }
     }
@@ -612,13 +680,13 @@ MainView {
 	    }
 
             Button {
-              text     : "Cancel"
-              onClicked: PopupUtils.close(thous_dialogue)
+              text     : "Cancel";
+              onClicked: PopupUtils.close(thous_dialogue);
             }
 
             Button {
-              text     : "Save"
-              color    : UbuntuColors.green
+              text     : "Save";
+              color    : UbuntuColors.green;
               onClicked: {
 		updateDbValue("comma", thous_text.text);
 		comma = thous_text.text;

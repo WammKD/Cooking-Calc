@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-20 04:19+0000\n"
+"POT-Creation-Date: 2016-04-20 09:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,62 +17,62 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../app/Main.qml:357
+#: ../app/Main.qml:362
 #: /home/jaft/Ubuntu/build-CookingCalculator-UbuntuSDK_for_armhf_GCC_ubuntu_sdk_15_04_vivid-Default/po/CookingCalculator.desktop.in.h:1
 msgid "Cooking Calculator"
 msgstr ""
 
-#: ../app/Main.qml:361
+#: ../app/Main.qml:366
 msgid "Products"
 msgstr ""
 
-#: ../app/Main.qml:373
+#: ../app/Main.qml:378
 msgid "Temperatures"
 msgstr ""
 
-#: ../app/Main.qml:385
+#: ../app/Main.qml:390
 msgid "Guides"
 msgstr ""
 
-#: ../app/Main.qml:468
+#: ../app/Main.qml:526
 msgid "    View Fractions"
 msgstr ""
 
-#: ../app/Main.qml:473
+#: ../app/Main.qml:542
 msgid ""
 "\n"
 "\n"
 "Volume"
 msgstr ""
 
-#: ../app/Main.qml:517
+#: ../app/Main.qml:586
 msgid "Weight"
 msgstr ""
 
-#: ../app/Main.qml:576
+#: ../app/Main.qml:646
 msgid "Settings"
 msgstr ""
 
-#: ../app/Main.qml:602
+#: ../app/Main.qml:672
 msgid "Change Thousands Separator"
 msgstr ""
 
-#: ../app/Main.qml:603 ../app/Main.qml:657
+#: ../app/Main.qml:673 ../app/Main.qml:727
 msgid "Input the characters you would like for the "
 msgstr ""
 
-#: ../app/Main.qml:631
+#: ../app/Main.qml:701
 msgid "Thousands separator:   "
 msgstr ""
 
-#: ../app/Main.qml:634 ../app/Main.qml:688
+#: ../app/Main.qml:704 ../app/Main.qml:758
 msgid "Change"
 msgstr ""
 
-#: ../app/Main.qml:656
+#: ../app/Main.qml:726
 msgid "Change Decimal Mark"
 msgstr ""
 
-#: ../app/Main.qml:685
+#: ../app/Main.qml:755
 msgid "Decimal mark:   "
 msgstr ""
