@@ -2,6 +2,7 @@ import "fraction.js" as Fraction
 import QtQuick 2.4
 import QtQuick.LocalStorage 2.0
 import Ubuntu.Components 1.3
+import Ubuntu.Components.Popups 1.3
 
 /*!
  *  \brief MainView with Tabs element.
@@ -228,15 +229,27 @@ MainView {
       print("Error retrieving value from database: " + err);
     }
 
-    print(r);
     return r;
+  }
+
+  function updateDbValue(col, value) {
+    try {
+      db.transaction(function(tx) {  // There should only be one row, all times
+		       tx.executeSql('UPDATE settings ' +
+				     'SET ' + col + '=?;', [value]);
+		     });
+    } catch(err) {
+      print("Error updating value in database.")
+      print('Command sent was: UPDATE settings SET ' + col + '=\'' + value +
+	    '\';');
+      print(err);
+    }
   }
 
   property var    db           : openDB();
   property string comma        : getDbValue("comma");
   property string period       : getDbValue("period");
   property string non_number   : "N/A";
-  property bool   format_num   : true;
   property string   vols_label : i18n.tr(Object.keys(vols   ).join("\n"));
   property string weight_label : i18n.tr(Object.keys(weights).join("\n"));
   property string  temps_label : i18n.tr(Object.keys(temps  ).join("\n"));
@@ -261,11 +274,10 @@ MainView {
   }
 
   function formatNums(n) {
-    if(format_num) {
-      return n.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1" + comma);
-    } else {
-      return n;
-    }
+    var arr = n.toString().split(".");
+
+    return arr[0].replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1" + comma) +
+           (arr[1] ? period + arr[1] : "");
   }
 
   function textAccumulation(t, f, o) {
@@ -294,13 +306,15 @@ MainView {
 			                        textAccumulation)(item, f, o));
 	label_decs += formatNums(r) + e;
 
+
+
 	var num       = (new fraction(r)).toString().split(" ");
 	var test      = num[0].indexOf("/") > -1;
 	label_wholes += (!(f == o) ? non_number :
 			             (!test ? formatNums(num[0]) :
 				              "0"))                       + e;
 	label_fracts += (!(f == o) ? non_number :
-			             ( test ? formatNums(num[0]) :
+			             ( test ? num[0]             :
 					      (num[1] ? num[1] : "0/0"))) + e;
       }
 
@@ -441,7 +455,7 @@ MainView {
 	    width           : parent.width;
 	    font.pixelSize  : FontUtils.sizeToPixels("medium");
 	    inputMethodHints: Qt.ImhFormattedNumbersOnly;
-	    text            : '0.0';
+	    text            : '0' + period + '0';
 	    onTextChanged   : convert(false);
 	  }
 
@@ -571,5 +585,115 @@ MainView {
 				   main_header.visible     = true;
 				 }
 			       }]
+
+    UbuntuListView {
+      anchors {
+	top    : parent.bottom;
+	left   : parent.left;
+	right  : parent.right;
+      }
+
+      ListItem {
+        id: thous;
+
+	Component {
+          id: thous_dialog;
+
+	  Dialog {
+            id   : thous_dialogue
+            title: i18n.tr("Change Thousands Separator");
+            text : i18n.tr("Input the characters you would like for the " +
+			   "mark of thousands place.");
+
+	    TextField {
+	      id            : thous_text;
+	      errorHighlight: false;
+	      text          : comma;
+	    }
+
+            Button {
+              text     : "Cancel"
+              onClicked: PopupUtils.close(thous_dialogue)
+            }
+
+            Button {
+              text     : "Save"
+              color    : UbuntuColors.green
+              onClicked: {
+		updateDbValue("comma", thous_text.text);
+		comma = thous_text.text;
+		PopupUtils.close(thous_dialogue);
+		convert(false);
+	      }
+            }
+	  }
+	}
+
+	ListItemLayout {
+          title.text: i18n.tr("Thousands separator:   " + comma);
+
+          Button {
+            text                : i18n.tr("Change");
+            color               : UbuntuColors.orange;
+	    onClicked           : PopupUtils.open(thous_dialog);
+            SlotsLayout.position: SlotsLayout.Trailing;
+          }
+	}
+      }
+
+      ListItem {
+	id: dec;
+
+	anchors {
+	  top  : thous.bottom;
+	  left : parent.left;
+	  right: parent.right;
+	}
+
+	Component {
+          id: dec_dialog;
+
+	  Dialog {
+            id   : dec_dialogue
+            title: i18n.tr("Change Decimal Mark");
+            text : i18n.tr("Input the characters you would like for the " +
+			   "decimal mark.");
+
+	    TextField {
+	      id            : dec_text;
+	      errorHighlight: false;
+	      text          : period;
+	    }
+
+            Button {
+              text     : "Cancel"
+              onClicked: PopupUtils.close(dec_dialogue)
+            }
+
+            Button {
+              text     : "Save"
+              color    : UbuntuColors.green
+              onClicked: {
+		updateDbValue("period", dec_text.text);
+		period = dec_text.text;
+		PopupUtils.close(dec_dialogue);
+		convert(false);
+	      }
+            }
+	  }
+	}
+
+	ListItemLayout {
+          title.text: i18n.tr("Decimal mark:   " + period);
+
+          Button {
+            text                : i18n.tr("Change");
+            color               : UbuntuColors.orange;
+	    onClicked           : PopupUtils.open(dec_dialog);
+            SlotsLayout.position: SlotsLayout.Trailing;
+          }
+	}
+      }
+    }
   }
 }
