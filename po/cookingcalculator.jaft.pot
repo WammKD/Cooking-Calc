@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-20 09:36+0000\n"
+"POT-Creation-Date: 2016-04-24 07:52+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,62 +17,107 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../app/Main.qml:362
+#: ../app/Main.qml:406
 #: /home/jaft/Ubuntu/build-CookingCalculator-UbuntuSDK_for_armhf_GCC_ubuntu_sdk_15_04_vivid-Default/po/CookingCalculator.desktop.in.h:1
 msgid "Cooking Calculator"
 msgstr ""
 
-#: ../app/Main.qml:366
+#: ../app/Main.qml:410
 msgid "Products"
 msgstr ""
 
-#: ../app/Main.qml:378
+#: ../app/Main.qml:414
 msgid "Temperatures"
 msgstr ""
 
-#: ../app/Main.qml:390
-msgid "Guides"
+#: ../app/Main.qml:418
+msgid "Substitutions"
 msgstr ""
 
-#: ../app/Main.qml:526
+#: ../app/Main.qml:465
+msgid "About"
+msgstr ""
+
+#: ../app/Main.qml:474
+msgid ""
+"Author:\n"
+"Contact: \n"
+"Source:\n"
+"Version: \n"
+"Year:"
+msgstr ""
+
+#: ../app/Main.qml:558
 msgid "    View Fractions"
 msgstr ""
 
-#: ../app/Main.qml:542
+#: ../app/Main.qml:573
 msgid ""
 "\n"
 "\n"
 "Volume"
 msgstr ""
 
-#: ../app/Main.qml:586
+#: ../app/Main.qml:617
 msgid "Weight"
 msgstr ""
 
-#: ../app/Main.qml:646
+#: ../app/Main.qml:686
+msgid "Baking Powders"
+msgstr ""
+
+#: ../app/Main.qml:822
+msgid "Butter"
+msgstr ""
+
+#: ../app/Main.qml:955
+msgid "Creams"
+msgstr ""
+
+#: ../app/Main.qml:1183
+msgid "Eggs"
+msgstr ""
+
+#: ../app/Main.qml:1302
+msgid "Flour"
+msgstr ""
+
+#: ../app/Main.qml:1341
+msgid "Lemons"
+msgstr ""
+
+#: ../app/Main.qml:1432
+msgid "Sugar"
+msgstr ""
+
+#: ../app/Main.qml:1469
+msgid "Yeast"
+msgstr ""
+
+#: ../app/Main.qml:1512
 msgid "Settings"
 msgstr ""
 
-#: ../app/Main.qml:672
+#: ../app/Main.qml:1542
 msgid "Change Thousands Separator"
 msgstr ""
 
-#: ../app/Main.qml:673 ../app/Main.qml:727
+#: ../app/Main.qml:1543 ../app/Main.qml:1597
 msgid "Input the characters you would like for the "
 msgstr ""
 
-#: ../app/Main.qml:701
+#: ../app/Main.qml:1571
 msgid "Thousands separator:   "
 msgstr ""
 
-#: ../app/Main.qml:704 ../app/Main.qml:758
+#: ../app/Main.qml:1574 ../app/Main.qml:1628
 msgid "Change"
 msgstr ""
 
-#: ../app/Main.qml:726
+#: ../app/Main.qml:1596
 msgid "Change Decimal Mark"
 msgstr ""
 
-#: ../app/Main.qml:755
+#: ../app/Main.qml:1625
 msgid "Decimal mark:   "
 msgstr ""
