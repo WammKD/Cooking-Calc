@@ -259,6 +259,8 @@ MainView {
   property bool   settings_change: false;
   property bool   allow_convert  : true;
   property real   sub_line_height: units.gu(2.5);
+  property real   subs_spacing   : units.gu(1);
+  property real   subs_spacing2  : units.gu(0);
   property string comma          : getDbValue("comma");
   property string period         : getDbValue("period");
   property string non_number     : "N/A";
@@ -296,11 +298,6 @@ MainView {
            (arr[1] ? period + arr[1] : "");
   }
 
-  function updateLastIndices() {
-    if(sects.selectedIndex != 2) last_tab_index = sects.selectedIndex;
-    last_tab_index2 = sects.selectedIndex;
-  }
-
   function setupTabChange() {
     var temp = [true, false, vols, temps];
 
@@ -312,12 +309,16 @@ MainView {
       s_p.visible                     = temp[sects.selectedIndex];
       weight_title.visible            = temp[sects.selectedIndex];
       weight_row.visible              = temp[sects.selectedIndex];
-      current_table                   = temp[sects.selectedIndex + 2];
+      current_table                   = temp[sects.selectedIndex+2];
       allow_convert                   = false;
       convert(true);
     }
 
-    updateLastIndices();
+    if(sects.selectedIndex != 2) {
+      last_tab_index                  = sects.selectedIndex;
+    }
+    last_tab_index2                   = sects.selectedIndex;
+
     allow_convert                     = true;
   }
 
@@ -676,7 +677,87 @@ MainView {
 	spacing   : units.gu(3);
 
 	Column {
-	  spacing: units.gu(1);
+	  spacing: subs_spacing;
+
+	  Label {
+	    text                    : i18n.tr("Alcohol");
+	    color                   : UbuntuColors.purple;
+	    fontSize                : "large";
+	    anchors.horizontalCenter: parent.horizontalCenter;
+	  }
+
+	  Row {
+      	    Label {
+      	      text     : "1 cup beer" + equals_spaces;
+	      width    : baking.width;
+      	      font.bold: true;
+      	    }
+
+	    Column {
+	      width  : subs_column.width - baking.width;
+	      spacing: subs_spacing2;
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1 cup nonalcoholic beer";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+		Label {
+		  text          : "1 cup chicken broth";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+	    }
+	  }
+
+	  Row {
+      	    Label {
+      	      text     : "1/4 cup brandy" + equals_spaces;
+	      width    : baking.width;
+      	      font.bold: true;
+      	    }
+
+	    Column {
+	      width  : subs_column.width - baking.width;
+	      spacing: subs_spacing2;
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1 teaspoon imitation brandy extract + " +
+		                  "enough water to make 1/4 cup";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+	    }
+	  }
+	}
+
+	Column {
+	  spacing: subs_spacing;
 
 	  Label {
 	    text                    : i18n.tr("Baking Powders");
@@ -694,6 +775,7 @@ MainView {
 
 	    Column {
 	      width  : subs_column.width - baking.width;
+	      spacing: subs_spacing2;
 
 	      Row {
 		Label {
@@ -734,6 +816,7 @@ MainView {
 
 	    Column {
 	      width  : subs_column.width - baking.width;
+	      spacing: subs_spacing2;
 
 	      Row {
 		Label {
@@ -757,8 +840,8 @@ MainView {
 
 		Label {
 		  text          : "1/4 teaspoon baking soda + " +
-		  "1/2 cup buttermilk\n" +
-		  "(decrease liquid in recipe by 1/2 cup)";
+		                  "1/2 cup buttermilk\n" +
+				  "(decrease liquid in recipe by 1/2 cup)";
 		  width         : parent.parent.width - equals.width;
       		  wrapMode      : Text.WordWrap;
 		  lineHeight    : sub_line_height;
@@ -777,6 +860,7 @@ MainView {
 
 	    Column {
 	      width  : subs_column.width - baking.width;
+	      spacing: subs_spacing2;
 
 	      Row {
 		Label {
@@ -785,7 +869,7 @@ MainView {
 
       		Label {
       		  text          : "3 teaspoons baking powder\n" +
-      		  "(baking powder has salt so reduce salt)";
+      		                  "(baking powder has salt so reduce salt)";
 		  width         : parent.parent.width - equals.width;
       		  wrapMode      : Text.WordWrap;
 		  lineHeight    : sub_line_height;
@@ -800,7 +884,7 @@ MainView {
 
 		Label {
 		  text          : "1 teaspoon potassium bicarbonate + " +
-		  "1/3 teaspoon salt";
+		                  "1/3 teaspoon salt";
 		  width         : parent.parent.width - equals.width;
       		  wrapMode      : Text.WordWrap;
 		  lineHeight    : sub_line_height;
@@ -812,7 +896,7 @@ MainView {
 	}
 
 	Column {
-	  spacing: units.gu(1);
+	  spacing: subs_spacing;
 
 	  Label {
 	    text                    : i18n.tr("Butter");
@@ -830,6 +914,7 @@ MainView {
 
 	    Column {
 	      width  : subs_column.width - butter.width;
+	      spacing: subs_spacing2;
 
 	      Row {
 		Label {
@@ -898,6 +983,7 @@ MainView {
 
 	    Column {
 	      width  : subs_column.width - butter.width;
+	      spacing: subs_spacing2;
 
 	      Row {
 		Label {
@@ -945,7 +1031,7 @@ MainView {
 	}
 
 	Column {
-	  spacing: units.gu(1);
+	  spacing: subs_spacing;
 
 	  Label {
 	    text                    : i18n.tr("Creams");
@@ -963,6 +1049,7 @@ MainView {
 
 	    Column {
 	      width  : subs_column.width - creams.width;
+	      spacing: subs_spacing2;
 
 	      Row {
 		Label {
@@ -1004,6 +1091,7 @@ MainView {
 
 	    Column {
 	      width  : subs_column.width - creams.width;
+	      spacing: subs_spacing2;
 
 	      Row {
 		Label {
@@ -1030,6 +1118,7 @@ MainView {
 
 	    Column {
 	      width  : subs_column.width - creams.width;
+	      spacing: subs_spacing2;
 
 	      Row {
 		Label {
@@ -1056,6 +1145,7 @@ MainView {
 
 	    Column {
 	      width  : subs_column.width - creams.width;
+	      spacing: subs_spacing2;
 
 	      Row {
 		Label {
@@ -1096,6 +1186,7 @@ MainView {
 
 	    Column {
 	      width  : subs_column.width - creams.width;
+	      spacing: subs_spacing2;
 
 	      Row {
 		Label {
@@ -1173,7 +1264,7 @@ MainView {
 	/* } */
 
 	Column {
-	  spacing: units.gu(1);
+	  spacing: subs_spacing;
 
 	  Label {
 	    text                    : i18n.tr("Eggs");
@@ -1191,6 +1282,7 @@ MainView {
 
 	    Column {
 	      width  : subs_column.width - eggs.width;
+	      spacing: subs_spacing2;
 
 	      Row {
 		Label {
@@ -1217,6 +1309,7 @@ MainView {
 
 	    Column {
 	      width  : subs_column.width - eggs.width;
+	      spacing: subs_spacing2;
 
 	      Row {
 		Label {
@@ -1292,7 +1385,7 @@ MainView {
 	}
 
 	Column {
-	  spacing: units.gu(1);
+	  spacing: subs_spacing;
 
 	  Label {
 	    text                    : i18n.tr("Flour");
@@ -1310,6 +1403,7 @@ MainView {
 
 	    Column {
 	      width  : subs_column.width - flour.width;
+	      spacing: subs_spacing2;
 
 	      Row {
 		Label {
@@ -1331,7 +1425,7 @@ MainView {
 	}
 
 	Column {
-	  spacing: units.gu(1);
+	  spacing: subs_spacing;
 
 	  Label {
 	    text                    : i18n.tr("Lemons");
@@ -1349,6 +1443,7 @@ MainView {
 
 	    Column {
 	      width  : subs_column.width - lemons.width;
+	      spacing: subs_spacing2;
 
 	      Row {
 		Label {
@@ -1389,6 +1484,7 @@ MainView {
 
 	    Column {
 	      width  : subs_column.width - lemons.width;
+	      spacing: subs_spacing2;
 
 	      Row {
 		Label {
@@ -1422,7 +1518,7 @@ MainView {
 	}
 
 	Column {
-	  spacing: units.gu(1);
+	  spacing: subs_spacing;
 
 	  Label {
 	    text                    : i18n.tr("Sugar");
@@ -1440,6 +1536,7 @@ MainView {
 
 	    Column {
 	      width  : subs_column.width - sugar.width;
+	      spacing: subs_spacing2;
 
 	      Row {
 		Label {
@@ -1459,7 +1556,7 @@ MainView {
 	}
 
 	Column {
-	  spacing: units.gu(1);
+	  spacing: subs_spacing;
 
 	  Label {
 	    text                    : i18n.tr("Yeast");
@@ -1477,6 +1574,7 @@ MainView {
 
 	    Column {
 	      width  : subs_column.width - yeast.width;
+	      spacing: subs_spacing2;
 
 	      Row {
 		Label {
