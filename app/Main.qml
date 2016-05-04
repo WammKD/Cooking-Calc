@@ -483,7 +483,7 @@ MainView {
 	      text          : "Jonathan Schmeling\n" +
 	                      "jaft.r@outlook.com\n" +
 			      "https://github.com/WammKD/Cooking-Calc\n" +
-			      "0.1\n" +
+			      "1.0\n" +
 			      "2016";
 	      color         : UbuntuColors.inkstone;
 	      font.bold     : true;
