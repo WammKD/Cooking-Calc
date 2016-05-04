@@ -1,6 +1,6 @@
 [Desktop Entry]
 _Name=Cooking Calculator
-Comment=I'll fill ya in.
+Comment=A cooking-measurement (volume and weight) converter QML app. for the Ubuntu Touch platform.
 Exec=@EXEC@
 Icon=@ICON@
 Terminal=false

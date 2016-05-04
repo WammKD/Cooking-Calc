@@ -1,17 +1,15 @@
 {
     "name": "@APP_ID@",
-    "description": "description of CookingCalculator",
+    "description": "A cooking-measurement (volume and weight) converter QML app. for the Ubuntu Touch platform.",
     "architecture": "@CLICK_ARCH@",
     "title": "@APP_NAME@",
     "hooks": {
         "CookingCalculator": {
             "apparmor": "CookingCalculator.apparmor",
-            "desktop":  "CookingCalculator.desktop"
+            "desktop": "CookingCalculator.desktop"
         }
     },
-    "version": "0.1",
+    "version": "1.0",
     "maintainer": "Jonathan Schmeling <jaft.r@outlook.com>",
-    "framework" : "ubuntu-sdk-15.04.3"
+    "framework": "ubuntu-sdk-15.04.4"
 }
-
-

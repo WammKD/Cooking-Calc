@@ -199,7 +199,7 @@ MainView {
 					   // estimated_size,
 					   // callback(db));
     var dB = LocalStorage.openDatabaseSync("cookingcalculator",
-					   "0.1",
+					   "1.0",
 					   "Mass and weight converter.",
 					   100000);
 
@@ -357,7 +357,7 @@ MainView {
 	var test      = num[0].indexOf("/") > -1;
 	label_wholes += (!(f == o) ? non_number :
 			             (!test ? formatNums(num[0]) :
-				              "0"))                       + e;
+				              "0"                      )) + e;
 	label_fracts += (!(f == o) ? non_number :
 			             ( test ? num[0]             :
 					      (num[1] ? num[1] : "0/0"))) + e;
