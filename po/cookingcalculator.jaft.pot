@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-04 06:40+0000\n"
+"POT-Creation-Date: 2016-05-04 09:29+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,133 +17,161 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../app/Main.qml:403
+#: ../app/Main.qml:406
 #: /home/jaft/Ubuntu/build-CookingCalculator-UbuntuSDK_for_armhf_GCC_ubuntu_sdk_15_04_vivid-Default/po/CookingCalculator.desktop.in.h:1
 msgid "Cooking Calculator"
 msgstr ""
 
-#: ../app/Main.qml:407
+#: ../app/Main.qml:410
 msgid "Products"
 msgstr ""
 
-#: ../app/Main.qml:411
+#: ../app/Main.qml:414
 msgid "Temperatures"
 msgstr ""
 
-#: ../app/Main.qml:415
+#: ../app/Main.qml:418
 msgid "Substitutions"
 msgstr ""
 
-#: ../app/Main.qml:462
+#: ../app/Main.qml:465
 msgid "About"
 msgstr ""
 
-#: ../app/Main.qml:472
+#: ../app/Main.qml:475
 msgid ""
 "Author:\n"
 "Contact: \n"
 "Source:\n"
 msgstr ""
 
-#: ../app/Main.qml:559
+#: ../app/Main.qml:562
 msgid "    View Fractions"
 msgstr ""
 
-#: ../app/Main.qml:574
+#: ../app/Main.qml:577
 msgid ""
 "\n"
 "\n"
 "Volume"
 msgstr ""
 
-#: ../app/Main.qml:618
+#: ../app/Main.qml:621
 msgid "Weight"
 msgstr ""
 
-#: ../app/Main.qml:687
+#: ../app/Main.qml:690
 msgid "Acids"
 msgstr ""
 
-#: ../app/Main.qml:766
+#: ../app/Main.qml:769
 msgid "Alcohol"
 msgstr ""
 
-#: ../app/Main.qml:846
+#: ../app/Main.qml:932
 msgid "Baking Powders"
 msgstr ""
 
-#: ../app/Main.qml:985
+#: ../app/Main.qml:1071
 msgid "Broth"
 msgstr ""
 
-#: ../app/Main.qml:1081
-msgid "Butter"
-msgstr ""
-
-#: ../app/Main.qml:1216
+#: ../app/Main.qml:1167
 msgid "Cheese"
 msgstr ""
 
-#: ../app/Main.qml:1474
+#: ../app/Main.qml:1425
 msgid "Chocolate"
 msgstr ""
 
-#: ../app/Main.qml:1583
+#: ../app/Main.qml:1603
+msgid "Citrus"
+msgstr ""
+
+#: ../app/Main.qml:1969
+msgid "Condiments"
+msgstr ""
+
+#: ../app/Main.qml:2217
 msgid "Creams"
 msgstr ""
 
-#: ../app/Main.qml:1929
+#: ../app/Main.qml:2619
 msgid "Eggs"
 msgstr ""
 
-#: ../app/Main.qml:2137
+#: ../app/Main.qml:2827
+msgid "Fish"
+msgstr ""
+
+#: ../app/Main.qml:2865
 msgid "Flour"
 msgstr ""
 
-#: ../app/Main.qml:2233
-msgid "Lemons"
-msgstr ""
-
-#: ../app/Main.qml:2326
+#: ../app/Main.qml:2961
 msgid "Milk"
 msgstr ""
 
-#: ../app/Main.qml:2550
+#: ../app/Main.qml:3185
+msgid "Nuts"
+msgstr ""
+
+#: ../app/Main.qml:3278
+msgid "Oils/Fats"
+msgstr ""
+
+#: ../app/Main.qml:3663
 msgid "Seasoning"
 msgstr ""
 
-#: ../app/Main.qml:2728
+#: ../app/Main.qml:3965
 msgid "Sugar"
 msgstr ""
 
-#: ../app/Main.qml:2822
+#: ../app/Main.qml:4059
 msgid "Yeast"
 msgstr ""
 
-#: ../app/Main.qml:2866
+#: ../app/Main.qml:4130
+msgid "Yogurt"
+msgstr ""
+
+#: ../app/Main.qml:4197
 msgid "Settings"
 msgstr ""
 
-#: ../app/Main.qml:2896
+#: ../app/Main.qml:4227
 msgid "Change Thousands Separator"
 msgstr ""
 
-#: ../app/Main.qml:2897 ../app/Main.qml:2954
+#: ../app/Main.qml:4228 ../app/Main.qml:4282
 msgid "Input the characters you would like for the "
 msgstr ""
 
-#: ../app/Main.qml:2928
+#: ../app/Main.qml:4256
 msgid "Thousands separator:   "
 msgstr ""
 
-#: ../app/Main.qml:2931 ../app/Main.qml:2985
+#: ../app/Main.qml:4259 ../app/Main.qml:4313 ../app/Main.qml:4372
 msgid "Change"
 msgstr ""
 
-#: ../app/Main.qml:2953
+#: ../app/Main.qml:4281
 msgid "Change Decimal Mark"
 msgstr ""
 
-#: ../app/Main.qml:2982
+#: ../app/Main.qml:4310
 msgid "Decimal mark:   "
+msgstr ""
+
+#: ../app/Main.qml:4335
+msgid "Change Decimal Places Amount"
+msgstr ""
+
+#: ../app/Main.qml:4336
+msgid "Input the number of decimal places you'd like "
+msgstr ""
+
+#: ../app/Main.qml:4369
+msgid "Number of decimal places:   "
 msgstr ""

@@ -208,14 +208,16 @@ MainView {
 		       tx.executeSql('CREATE TABLE IF NOT EXISTS ' +
 				     'settings(comma  TEXT    NOT NULL, ' +
 				              'period TEXT    NOT NULL, ' +
+					      'places INTEGER NOT NULL, ' +
 				              'fracts BOOLEAN NOT NULL);');
 
 		       var table = tx.executeSql("SELECT * " +
 						 "FROM settings;");
 
 		       if(table.rows.length == 0) {
-			 tx.executeSql('INSERT INTO settings VALUES(?, ?, ?);',
-				       [",", ".", 0]);
+			 tx.executeSql('INSERT INTO settings VALUES(?, ?, ' +
+				                                   '?, ?);',
+				       [",", ".", 2, 0]);
 			 print('Settings table seeded');
 		       }
 		       print('Settings table initialized.');
@@ -263,6 +265,7 @@ MainView {
   property real   subs_spacing2  : units.gu(0);
   property string comma          : getDbValue("comma");
   property string period         : getDbValue("period");
+  property int    places         : getDbValue("places");
   property string non_number     : "N/A";
   property string equals_spaces  : "\u00A0\u00A0";
   property string   vols_label   : Object.keys(vols   ).join("\n");
@@ -288,7 +291,7 @@ MainView {
   }
 
   function round(n) {
-    return (n === non_number ? n : n.toFixed(2));
+    return (n === non_number ? n : n.toFixed(places));
   }
 
   function formatNums(n) {
@@ -837,6 +840,89 @@ MainView {
 	      }
 	    }
 	  }
+
+	  Row {
+      	    Label {
+      	      text     : "1 tablespoon rum" + equals_spaces;
+	      width    : baking.width;
+      	      font.bold: true;
+      	    }
+
+	    Column {
+	      width  : subs_column.width - baking.width;
+	      spacing: subs_spacing2;
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1/2 teaspoon rum extract + " +
+		                  "enough water to make 1 tablespoon";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+	    }
+	  }
+
+	  Row {
+      	    Label {
+      	      text     : "1 cup wine" + equals_spaces;
+	      width    : baking.width;
+      	      font.bold: true;
+      	    }
+
+	    Column {
+	      width  : subs_column.width - baking.width;
+	      spacing: subs_spacing2;
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1 cup chicken or beef broth";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1 cup fruit juice + 2 teaspoons vinegar";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1 cup water";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+	    }
+	  }
 	}
 
 	Column {
@@ -1064,141 +1150,6 @@ MainView {
       		  text          : "1 cup canned/homemade chicken " +
 		                  "broth/stock:\n" +
 				  "Reduce liquid in recipe by 1 cup";
-		  width         : parent.parent.width - equals.width;
-      		  wrapMode      : Text.WordWrap;
-		  lineHeight    : sub_line_height;
-		  lineHeightMode: Text.FixedHeight;
-      		}
-	      }
-	    }
-	  }
-	}
-
-	Column {
-	  spacing: subs_spacing;
-
-	  Label {
-	    text                    : i18n.tr("Butter");
-	    color                   : UbuntuColors.purple;
-	    fontSize                : "large";
-	    anchors.horizontalCenter: parent.horizontalCenter;
-	  }
-
-	  Row {
-      	    Label {
-      	      text     : "1 cup butter (salted)" + equals_spaces;
-	      width    : butter.width;
-      	      font.bold: true;
-      	    }
-
-	    Column {
-	      width  : subs_column.width - butter.width;
-	      spacing: subs_spacing2;
-
-	      Row {
-		Label {
-		  text: "=" + equals_spaces;
-		}
-
-      		Label {
-      		  text          : "1 cup margarine";
-		  width         : parent.parent.width - equals.width;
-      		  wrapMode      : Text.WordWrap;
-		  lineHeight    : sub_line_height;
-		  lineHeightMode: Text.FixedHeight;
-      		}
-	      }
-
-	      Row {
-		Label {
-		  text: "=" + equals_spaces;
-		}
-
-		Label {
-		  text          : "1 cup shortening + 1/2 teaspoon salt";
-		  width         : parent.parent.width - equals.width;
-      		  wrapMode      : Text.WordWrap;
-		  lineHeight    : sub_line_height;
-		  lineHeightMode: Text.FixedHeight;
-      		}
-	      }
-
-	      Row {
-		Label {
-		  text: "=" + equals_spaces;
-		}
-
-		Label {
-		  text          : "7/8 cup vegetable oil + 1/2 teaspoon salt";
-		  width         : parent.parent.width - equals.width;
-      		  wrapMode      : Text.WordWrap;
-		  lineHeight    : sub_line_height;
-		  lineHeightMode: Text.FixedHeight;
-      		}
-	      }
-
-	      Row {
-		Label {
-		  text: "=" + equals_spaces;
-		}
-
-		Label {
-		  text          : "7/8 cup lard + 1/2 teaspoon salt";
-		  width         : parent.parent.width - equals.width;
-      		  wrapMode      : Text.WordWrap;
-		  lineHeight    : sub_line_height;
-		  lineHeightMode: Text.FixedHeight;
-      		}
-	      }
-	    }
-	  }
-
-	  Row {
-      	    Label {
-	      id       : butter;
-      	      text     : "1 cup butter (unsalted)" + equals_spaces;
-      	      font.bold: true;
-      	    }
-
-	    Column {
-	      width  : subs_column.width - butter.width;
-	      spacing: subs_spacing2;
-
-	      Row {
-		Label {
-		  text: "=" + equals_spaces;
-		}
-
-      		Label {
-      		  text          : "1 cup shortening";
-		  width         : parent.parent.width - equals.width;
-      		  wrapMode      : Text.WordWrap;
-		  lineHeight    : sub_line_height;
-		  lineHeightMode: Text.FixedHeight;
-      		}
-	      }
-
-	      Row {
-		Label {
-		  text: "=" + equals_spaces;
-		}
-
-		Label {
-		  text          : "7/8 cup vegetable oil";
-		  width         : parent.parent.width - equals.width;
-      		  wrapMode      : Text.WordWrap;
-		  lineHeight    : sub_line_height;
-		  lineHeightMode: Text.FixedHeight;
-      		}
-	      }
-
-	      Row {
-		Label {
-		  text: "=" + equals_spaces;
-		}
-
-		Label {
-		  text          : "7/8 cup lard";
 		  width         : parent.parent.width - equals.width;
       		  wrapMode      : Text.WordWrap;
 		  lineHeight    : sub_line_height;
@@ -1522,8 +1473,8 @@ MainView {
 
 	  Row {
       	    Label {
-	      id       : choc;
       	      text     : "1 ounce chocolate (unsweetened)" + equals_spaces;
+	      width    : choc.width;
       	      font.bold: true;
       	    }
 
@@ -1539,6 +1490,75 @@ MainView {
       		Label {
       		  text          : "3 tablespoons unsweetened cocoa + " +
 		                  "1 tablespoon shortening/vegetable-oil";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+	    }
+	  }
+
+	  Row {
+      	    Label {
+	      id       : choc;
+      	      text     : "1 cup chocolate chips (semisweet)" + equals_spaces;
+      	      font.bold: true;
+      	    }
+
+	    Column {
+	      width  : subs_column.width - choc.width;
+	      spacing: subs_spacing2;
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1 cup chocolate candies";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1 cup peanut-butter/other-flavored chips";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1 cup chopped nuts";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1 cup chopped dried fruit";
 		  width         : parent.parent.width - equals.width;
       		  wrapMode      : Text.WordWrap;
 		  lineHeight    : sub_line_height;
@@ -1566,6 +1586,620 @@ MainView {
 
       		Label {
       		  text          : "1 (1-ounce) square unsweetened chocolate";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+	    }
+	  }
+	}
+
+	Column {
+	  spacing: subs_spacing;
+
+	  Label {
+	    text                    : i18n.tr("Citrus");
+	    color                   : UbuntuColors.purple;
+	    fontSize                : "large";
+	    anchors.horizontalCenter: parent.horizontalCenter;
+	  }
+
+	  Row {
+      	    Label {
+      	      text     : "1 lemon" + equals_spaces;
+	      width    : lemons.width;
+      	      font.bold: true;
+      	    }
+
+	    Column {
+	      width  : subs_column.width - lemons.width;
+	      spacing: subs_spacing2;
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1 to 3 tablespoons juice";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1 to 1 1/2 teaspoons grated zest";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+	    }
+	  }
+
+	  Row {
+      	    Label {
+      	      text     : "4 large lemons" + equals_spaces;
+	      width    : lemons.width;
+      	      font.bold: true;
+      	    }
+
+	    Column {
+	      width  : subs_column.width - lemons.width;
+	      spacing: subs_spacing2;
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1 cup juice";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1/4 cup grated zest";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+	    }
+	  }
+
+	  Row {
+      	    Label {
+	      id       : lemons;
+      	      text     : "2 stalks lemon grass, fresh" + equals_spaces;
+      	      font.bold: true;
+      	    }
+
+	    Column {
+	      width  : subs_column.width - lemons.width;
+	      spacing: subs_spacing2;
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1 tablespoon lemon zest";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+	    }
+	  }
+
+	  Row {
+      	    Label {
+      	      text     : "1 teaspoon lemon juice" + equals_spaces;
+	      width    : lemons.width;
+      	      font.bold: true;
+      	    }
+
+	    Column {
+	      width  : subs_column.width - lemons.width;
+	      spacing: subs_spacing2;
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1/2 teaspoon vinegar";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1 teaspoon white wine";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1 teaspoon lime juice";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+	    }
+	  }
+
+	  Row {
+      	    Label {
+      	      text     : "1 teaspoon lemon zest" + equals_spaces;
+	      width    : lemons.width;
+      	      font.bold: true;
+      	    }
+
+	    Column {
+	      width  : subs_column.width - lemons.width;
+	      spacing: subs_spacing2;
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1/2 teaspoon lemon extract";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "2 tablespoons lemon juice";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+	    }
+	  }
+
+	  Row {
+      	    Label {
+      	      text     : "1 teaspoon lime juice" + equals_spaces;
+	      width    : lemons.width;
+      	      font.bold: true;
+      	    }
+
+	    Column {
+	      width  : subs_column.width - lemons.width;
+	      spacing: subs_spacing2;
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1 teaspoon vinegar";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1 teaspoon white wine";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1 teaspoon lemon juice";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+	    }
+	  }
+
+	  Row {
+      	    Label {
+      	      text     : "1 teaspoon lime zest" + equals_spaces;
+	      width    : lemons.width;
+      	      font.bold: true;
+      	    }
+
+	    Column {
+	      width  : subs_column.width - lemons.width;
+	      spacing: subs_spacing2;
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1 teaspoon lemon zest";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+	    }
+	  }
+
+	  Row {
+      	    Label {
+      	      text     : "1 tablespoon orange juice" + equals_spaces;
+	      width    : lemons.width;
+      	      font.bold: true;
+      	    }
+
+	    Column {
+	      width  : subs_column.width - lemons.width;
+	      spacing: subs_spacing2;
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1 tablespoon other citrus juice";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+	    }
+	  }
+
+	  Row {
+      	    Label {
+      	      text     : "1 tablespoon orange zest" + equals_spaces;
+	      width    : lemons.width;
+      	      font.bold: true;
+      	    }
+
+	    Column {
+	      width  : subs_column.width - lemons.width;
+	      spacing: subs_spacing2;
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1/2 teaspoon orange extract";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1 teaspoon lemon juice";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+	    }
+	  }
+	}
+
+	Column {
+	  spacing: subs_spacing;
+
+	  Label {
+	    text                    : i18n.tr("Condiments");
+	    color                   : UbuntuColors.purple;
+	    fontSize                : "large";
+	    anchors.horizontalCenter: parent.horizontalCenter;
+	  }
+
+	  Row {
+      	    Label {
+      	      text     : "1 cup honey" + equals_spaces;
+	      width    : condiments.width;
+      	      font.bold: true;
+      	    }
+
+	    Column {
+	      width  : subs_column.width - condiments.width;
+	      spacing: subs_spacing2;
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1 1/4 cup white sugar + 1/3 cup water";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1 cup corn syrup";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1 cup light treacle syrup";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+	    }
+	  }
+
+	  Row {
+      	    Label {
+	      id       : condiments;
+      	      text     : "1 teaspoon hot pepper sauce" + equals_spaces;
+      	      font.bold: true;
+      	    }
+
+	    Column {
+	      width  : subs_column.width - condiments.width;
+	      spacing: subs_spacing2;
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "3/4 teaspoon cayenne pepper + " +
+		                  "1 teaspoon vinegar";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+	    }
+	  }
+
+	  Row {
+      	    Label {
+      	      text     : "1 cup ketchup" + equals_spaces;
+	      width    : condiments.width;
+      	      font.bold: true;
+      	    }
+
+	    Column {
+	      width  : subs_column.width - condiments.width;
+	      spacing: subs_spacing2;
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1 cup tomato sauce + " +
+		                  "1 teaspoon vinegar + 1 tablespoon sugar";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+	    }
+	  }
+
+	  Row {
+      	    Label {
+      	      text     : "1 cup mayonnaise" + equals_spaces;
+	      width    : condiments.width;
+      	      font.bold: true;
+      	    }
+
+	    Column {
+	      width  : subs_column.width - condiments.width;
+	      spacing: subs_spacing2;
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1 cup sour cream";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1 cup plain yogurt";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+	    }
+	  }
+
+	  Row {
+      	    Label {
+      	      text     : "1 cup molasses" + equals_spaces;
+	      width    : condiments.width;
+      	      font.bold: true;
+      	    }
+
+	    Column {
+	      width  : subs_column.width - condiments.width;
+	      spacing: subs_spacing2;
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "3/4 cup brown sugar + " +
+		                  "1 teaspoon cream of tartar";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+	    }
+	  }
+
+	  Row {
+      	    Label {
+      	      text     : "1 tablespoon mustard" + equals_spaces;
+	      width    : condiments.width;
+      	      font.bold: true;
+      	    }
+
+	    Column {
+	      width  : subs_column.width - condiments.width;
+	      spacing: subs_spacing2;
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1 tablespoon dried mustard + " +
+		                  "1 teaspoon water + 1 teaspoon vinegar + " +
+				  "1 teaspoon sugar";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+	    }
+	  }
+
+	  Row {
+      	    Label {
+      	      text     : "1/2 cup soy sauce" + equals_spaces;
+	      width    : condiments.width;
+      	      font.bold: true;
+      	    }
+
+	    Column {
+	      width  : subs_column.width - condiments.width;
+	      spacing: subs_spacing2;
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1/4 cup Worcestershire sauce + " +
+		                  "1 tablespoon water";
 		  width         : parent.parent.width - equals.width;
       		  wrapMode      : Text.WordWrap;
 		  lineHeight    : sub_line_height;
@@ -1890,6 +2524,62 @@ MainView {
 	      }
 	    }
 	  }
+
+	  Row {
+      	    Label {
+      	      text     : "1 cup sour cream" + equals_spaces;
+	      width    : creams.width;
+      	      font.bold: true;
+      	    }
+
+	    Column {
+	      width  : subs_column.width - creams.width;
+	      spacing: subs_spacing2;
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1 cup plain yogurt";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1 tablespoon lemon-juice/vinegar + " +
+		                  "enough cream to make 1 cup";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "3/4 cup buttermilk + 1/3 cup butter";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+	    }
+	  }
 	}
 
 	/* Row { */
@@ -2134,6 +2824,44 @@ MainView {
 	  spacing: subs_spacing;
 
 	  Label {
+	    text                    : i18n.tr("Fish");
+	    color                   : UbuntuColors.purple;
+	    fontSize                : "large";
+	    anchors.horizontalCenter: parent.horizontalCenter;
+	  }
+
+	  Row {
+      	    Label {
+	      id       : fish
+      	      text     : "8 ounces herring" + equals_spaces;
+      	      font.bold: true;
+      	    }
+
+	    Column {
+	      width  : subs_column.width - fish.width;
+	      spacing: subs_spacing2;
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "8 ounces of sardines";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+	    }
+	  }
+	}
+
+	Column {
+	  spacing: subs_spacing;
+
+	  Label {
 	    text                    : i18n.tr("Flour");
 	    color                   : UbuntuColors.purple;
 	    fontSize                : "large";
@@ -2216,99 +2944,6 @@ MainView {
       		  text          : "7/8 cup sifted all-purpose flour + " +
 	                          "1 1/2 teaspoons baking powder + " +
 				  "1/2 teaspoon salt";
-		  width         : parent.parent.width - equals.width;
-      		  wrapMode      : Text.WordWrap;
-		  lineHeight    : sub_line_height;
-		  lineHeightMode: Text.FixedHeight;
-      		}
-	      }
-	    }
-	  }
-	}
-
-	Column {
-	  spacing: subs_spacing;
-
-	  Label {
-	    text                    : i18n.tr("Lemons");
-	    color                   : UbuntuColors.purple;
-	    fontSize                : "large";
-	    anchors.horizontalCenter: parent.horizontalCenter;
-	  }
-
-	  Row {
-      	    Label {
-      	      text     : "1 lemon" + equals_spaces;
-	      width    : lemons.width;
-      	      font.bold: true;
-      	    }
-
-	    Column {
-	      width  : subs_column.width - lemons.width;
-	      spacing: subs_spacing2;
-
-	      Row {
-		Label {
-		  text: "=" + equals_spaces;
-		}
-
-      		Label {
-      		  text          : "1 to 3 tablespoons juice";
-		  width         : parent.parent.width - equals.width;
-      		  wrapMode      : Text.WordWrap;
-		  lineHeight    : sub_line_height;
-		  lineHeightMode: Text.FixedHeight;
-      		}
-	      }
-
-	      Row {
-		Label {
-		  text: "=" + equals_spaces;
-		}
-
-      		Label {
-      		  text          : "1 to 1 1/2 teaspoons grated zest";
-		  width         : parent.parent.width - equals.width;
-      		  wrapMode      : Text.WordWrap;
-		  lineHeight    : sub_line_height;
-		  lineHeightMode: Text.FixedHeight;
-      		}
-	      }
-	    }
-	  }
-
-	  Row {
-      	    Label {
-	      id       : lemons;
-      	      text     : "4 large lemons" + equals_spaces;
-      	      font.bold: true;
-      	    }
-
-	    Column {
-	      width  : subs_column.width - lemons.width;
-	      spacing: subs_spacing2;
-
-	      Row {
-		Label {
-		  text: "=" + equals_spaces;
-		}
-
-      		Label {
-      		  text          : "1 cup juice";
-		  width         : parent.parent.width - equals.width;
-      		  wrapMode      : Text.WordWrap;
-		  lineHeight    : sub_line_height;
-		  lineHeightMode: Text.FixedHeight;
-      		}
-	      }
-
-	      Row {
-		Label {
-		  text: "=" + equals_spaces;
-		}
-
-      		Label {
-      		  text          : "1/4 cup grated zest";
 		  width         : parent.parent.width - equals.width;
       		  wrapMode      : Text.WordWrap;
 		  lineHeight    : sub_line_height;
@@ -2547,6 +3182,484 @@ MainView {
 	  spacing: subs_spacing;
 
 	  Label {
+	    text                    : i18n.tr("Nuts");
+	    color                   : UbuntuColors.purple;
+	    fontSize                : "large";
+	    anchors.horizontalCenter: parent.horizontalCenter;
+	  }
+
+	  Row {
+      	    Label {
+	      id       : nuts;
+      	      text     : "1 cup hazelnuts, whole" + equals_spaces;
+      	      font.bold: true;
+      	    }
+
+	    Column {
+	      width  : subs_column.width - nuts.width;
+	      spacing: subs_spacing2;
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1 cup macadamia nuts";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1 cup almonds";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+	    }
+	  }
+
+	  Row {
+      	    Label {
+      	      text     : "1 cup macadamia nuts" + equals_spaces;
+	      width    : nuts.width;
+      	      font.bold: true;
+      	    }
+
+	    Column {
+	      width  : subs_column.width - nuts.width;
+	      spacing: subs_spacing2;
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1 cup almonds";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1 cup hazelnuts";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+	    }
+	  }
+	}
+
+	Column {
+	  spacing: subs_spacing;
+
+	  Label {
+	    text                    : i18n.tr("Oils/Fats");
+	    color                   : UbuntuColors.purple;
+	    fontSize                : "large";
+	    anchors.horizontalCenter: parent.horizontalCenter;
+	  }	  
+
+	  Row {
+      	    Label {
+      	      text     : "1 cup butter," + equals_spaces + "\nsalted";
+	      width    : oils.width;
+      	      font.bold: true;
+      	    }
+
+	    Column {
+	      width  : subs_column.width - oils.width;
+	      spacing: subs_spacing2;
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1 cup margarine";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+		Label {
+		  text          : "1 cup shortening + 1/2 teaspoon salt";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+		Label {
+		  text          : "7/8 cup vegetable oil + 1/2 teaspoon salt";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+		Label {
+		  text          : "7/8 cup lard + 1/2 teaspoon salt";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+	    }
+	  }
+
+	  Row {
+      	    Label {
+      	      text     : "1 cup butter," + equals_spaces + "\nunsalted";
+	      width    : oils.width;
+      	      font.bold: true;
+      	    }
+
+	    Column {
+	      width  : subs_column.width - oils.width;
+	      spacing: subs_spacing2;
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1 cup shortening";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+		Label {
+		  text          : "7/8 cup vegetable oil";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+		Label {
+		  text          : "7/8 cup lard";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+	    }
+	  }
+
+	  Row {
+      	    Label {
+      	      text     : "1 cup lard" + equals_spaces;
+	      width    : oils.width;
+      	      font.bold: true;
+      	    }
+
+	    Column {
+	      width  : subs_column.width - oils.width;
+	      spacing: subs_spacing2;
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1 cup shortening";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "7/8 cup vegetable oil";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1 cup butter";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+	    }
+	  }
+
+	  Row {
+      	    Label {
+      	      text     : "1 cup margarine" + equals_spaces;
+	      width    : oils.width;
+      	      font.bold: true;
+      	    }
+
+	    Column {
+	      width  : subs_column.width - oils.width;
+	      spacing: subs_spacing2;
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1 cup shortening + 1/2 teaspoon salt";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+		Label {
+		  text          : "1 cup butter";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+		Label {
+		  text          : "7/8 cup vegetable oil + 1/2 teaspoon salt";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+		Label {
+		  text          : "7/8 cup lard plus 1/2 teaspoon salt";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+	    }
+	  }
+
+	  Row {
+      	    Label {
+      	      text     : "1 cup shortening" + equals_spaces;
+	      width    : oils.width;
+      	      font.bold: true;
+      	    }
+
+	    Column {
+	      width  : subs_column.width - oils.width;
+	      spacing: subs_spacing2;
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1 cup butter";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1 cup margarine minus " +
+		                  "1/2 teaspoon salt from recipe";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+	    }
+	  }
+
+	  Row {
+      	    Label {
+	      id       : oils;
+      	      text     : "1 cup vegetable oil," + equals_spaces +
+	                 "\nfor baking";
+      	      font.bold: true;
+      	    }
+
+	    Column {
+	      width  : subs_column.width - oils.width;
+	      spacing: subs_spacing2;
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1 cup applesauce";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1 cup fruit puree";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+	    }
+	  }
+
+	  Row {
+      	    Label {
+      	      text     : "1 cup vegetable oil," + equals_spaces +
+	                 "\nfor frying";
+	      width    : oils.width;
+      	      font.bold: true;
+      	    }
+
+	    Column {
+	      width  : subs_column.width - oils.width;
+	      spacing: subs_spacing2;
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1 cup lard";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1 cup vegetable shortening";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+	    }
+	  }
+	}
+
+	Column {
+	  spacing: subs_spacing;
+
+	  Label {
 	    text                    : i18n.tr("Seasoning");
 	    color                   : UbuntuColors.purple;
 	    fontSize                : "large";
@@ -2583,9 +3696,9 @@ MainView {
 
 	  Row {
       	    Label {
-	      id       : season;
       	      text     : "1 tablespoon chervil," + equals_spaces + "\n" +
 	                 "chopped fresh";
+	      width    : season.width;
       	      font.bold: true;
       	    }
 
@@ -2668,7 +3781,7 @@ MainView {
 
 	  Row {
       	    Label {
-      	      text     : "1 teaspoon ginger, dry" + equals_spaces;
+      	      text     : "1 teaspoon ginger," + equals_spaces +"\ndry";
 	      width    : season.width;
       	      font.bold: true;
       	    }
@@ -2683,7 +3796,7 @@ MainView {
 		}
 
       		Label {
-      		  text          : "2 teaspoons chopped fresh ginger";
+      		  text          : "2 teaspoons chopped ginger,\nfresh";
 		  width         : parent.parent.width - equals.width;
       		  wrapMode      : Text.WordWrap;
 		  lineHeight    : sub_line_height;
@@ -2695,7 +3808,8 @@ MainView {
 
 	  Row {
       	    Label {
-      	      text     : "1 teaspoon minced ginger, fresh" + equals_spaces;
+      	      text     : "1 teaspoon minced ginger," + equals_spaces +
+	                 "\nfresh";
 	      width    : season.width;
       	      font.bold: true;
       	    }
@@ -2710,7 +3824,130 @@ MainView {
 		}
 
       		Label {
-      		  text          : "1/2 teaspoon ground dried ginger";
+      		  text          : "1/2 teaspoon ground ginger,\ndried";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+	    }
+	  }
+
+	  Row {
+      	    Label {
+      	      text     : "1 teaspoon mace" + equals_spaces;
+	      width    : season.width;
+      	      font.bold: true;
+      	    }
+
+	    Column {
+	      width  : subs_column.width - season.width;
+	      spacing: subs_spacing2;
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1 teaspoon nutmeg";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+	    }
+	  }
+
+	  Row {
+      	    Label {
+      	      text     : "1/4 cup chopped mint," + equals_spaces + "\nfresh";
+	      width    : season.width;
+      	      font.bold: true;
+      	    }
+
+	    Column {
+	      width  : subs_column.width - season.width;
+	      spacing: subs_spacing2;
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1 tablespoon mint leaves,\ndried";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+	    }
+	  }
+
+	  Row {
+      	    Label {
+	      id       : season;
+      	      text     : "1 tablespoon chopped parsley," + equals_spaces +
+	                 "\nfresh";
+      	      font.bold: true;
+      	    }
+
+	    Column {
+	      width  : subs_column.width - season.width;
+	      spacing: subs_spacing2;
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1 tablespoon chopped chervil,\nfresh";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1 teaspoon parsley,\ndried";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+	    }
+	  }
+
+	  Row {
+      	    Label {
+      	      text     : "1/4 teaspoon saffron" + equals_spaces;
+	      width    : season.width;
+      	      font.bold: true;
+      	    }
+
+	    Column {
+	      width  : subs_column.width - season.width;
+	      spacing: subs_spacing2;
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1/4 teaspoon turmeric";
 		  width         : parent.parent.width - equals.width;
       		  wrapMode      : Text.WordWrap;
 		  lineHeight    : sub_line_height;
@@ -2828,7 +4065,7 @@ MainView {
 	  Row {
       	    Label {
 	      id       : yeast;
-      	      text     : "1 packet dry" + equals_spaces;
+      	      text     : "1 (.25 ounce) packet, dry" + equals_spaces;
       	      font.bold: true;
       	    }
 
@@ -2842,7 +4079,35 @@ MainView {
 		}
 
       		Label {
-      		  text          : "2 1/4 to 2 1/2 teaspoons dry";
+      		  text          : "1 cake compressed yeast";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "2 1/2 teaspoons active dry yeast";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "2 1/2 teaspoons rapid rise yeast";
 		  width         : parent.parent.width - equals.width;
       		  wrapMode      : Text.WordWrap;
 		  lineHeight    : sub_line_height;
@@ -2857,6 +4122,72 @@ MainView {
 	/*   lineHeight    : sub_line_height; */
 	/*   lineHeightMode: Text.FixedHeight; */
       	/* } */
+
+	Column {
+	  spacing: subs_spacing;
+
+	  Label {
+	    text                    : i18n.tr("Yogurt");
+	    color                   : UbuntuColors.purple;
+	    fontSize                : "large";
+	    anchors.horizontalCenter: parent.horizontalCenter;
+	  }
+
+	  Row {
+      	    Label {
+	      id       : yogurt;
+      	      text     : "1 cup yogurt" + equals_spaces;
+      	      font.bold: true;
+      	    }
+
+	    Column {
+	      width  : subs_column.width - yogurt.width;
+	      spacing: subs_spacing2;
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1 cup sour cream";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1 cup buttermilk";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+
+	      Row {
+		Label {
+		  text: "=" + equals_spaces;
+		}
+
+      		Label {
+      		  text          : "1 cup sour milk";
+		  width         : parent.parent.width - equals.width;
+      		  wrapMode      : Text.WordWrap;
+		  lineHeight    : sub_line_height;
+		  lineHeightMode: Text.FixedHeight;
+      		}
+	      }
+	    }
+	  }
+	}
       }
     }
   }
@@ -2895,7 +4226,7 @@ MainView {
             id   : thous_dialogue
             title: i18n.tr("Change Thousands Separator");
             text : i18n.tr("Input the characters you would like for the " +
-			   "mark of thousands place.");
+			   "mark of the thousands place.");
 
 	    TextField {
 	      id            : thous_text;
@@ -2982,6 +4313,65 @@ MainView {
             text                : i18n.tr("Change");
             color               : UbuntuColors.orange;
 	    onClicked           : PopupUtils.open(dec_dialog);
+            SlotsLayout.position: SlotsLayout.Trailing;
+          }
+	}
+      }
+
+      ListItem {
+	id: place;
+
+	anchors {
+	  top  : dec.bottom;
+	  left : parent.left;
+	  right: parent.right;
+	}
+
+	Component {
+          id: place_dialog;
+
+	  Dialog {
+            id   : place_dialogue
+            title: i18n.tr("Change Decimal Places Amount");
+            text : i18n.tr("Input the number of decimal places you'd like " +
+			   "conversions to be calculated to (this will " +
+			   "affect the size of the denominator of the " +
+			   "fractions.");
+
+	    TextField {
+	      id              : place_text;
+	      errorHighlight  : false;
+	      validator       : IntValidator {
+	                        }
+	      inputMethodHints: Qt.ImhFormattedNumbersOnly;
+	      text            : places;
+	    }
+
+            Button {
+              text     : "Cancel"
+              onClicked: PopupUtils.close(place_dialogue)
+            }
+
+            Button {
+              text     : "Save"
+              color    : UbuntuColors.green
+              onClicked: {
+		updateDbValue("places", place_text.text);
+		places = place_text.text;
+		PopupUtils.close(place_dialogue);
+		settings_change = true;
+	      }
+            }
+	  }
+	}
+
+	ListItemLayout {
+          title.text: i18n.tr("Number of decimal places:   " + places);
+
+          Button {
+            text                : i18n.tr("Change");
+            color               : UbuntuColors.orange;
+	    onClicked           : PopupUtils.open(place_dialog);
             SlotsLayout.position: SlotsLayout.Trailing;
           }
 	}
